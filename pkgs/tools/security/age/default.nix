@@ -31,6 +31,7 @@ buildGoModule rec {
       url = "https://github.com/FiloSottile/age/commit/edf7388f7731b274b055dcab3ec4006cc4961b68.patch";
       sha256 = "sha256-CloCj/uF3cqTeCfRkV6TeYiovuDQXm1ZIklREWAot1E=";
     })
+    ./inspect-ability.patch
   ];
 
   ldflags = [
