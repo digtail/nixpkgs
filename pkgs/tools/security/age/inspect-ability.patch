@@ -1,0 +1,333 @@
+From a5c2169276cb5a0fbfb772ced13bea05584cfb7c Mon Sep 17 00:00:00 2001
+From: James Williams <jamesphwilliams@gmail.com>
+Date: Sun, 30 Apr 2023 15:26:12 +0100
+Subject: [PATCH] Add --inspect
+
+---
+ age.go                    | 31 ++++++++++++++
+ age_test.go               | 77 +++++++++++++++++++++++++++++++++++
+ cmd/age/age.go            | 86 ++++++++++++++++++++++++++++++---------
+ internal/format/format.go |  6 ++-
+ 4 files changed, 178 insertions(+), 22 deletions(-)
+
+diff --git a/age.go b/age.go
+index a0ef0bb7..504e669f 100644
+--- a/age.go
++++ b/age.go
+@@ -168,6 +168,37 @@ func (*NoIdentityMatchError) Error() string {
+ 	return "no identity matched any of the recipients"
+ }
+ 
++type FileInfo struct {
++	// RecipientCounts contains a count of recipients by recipient type.
++	RecipientCounts map[string]int64
++	Version         string
++	PayloadSize     int64
++}
++
++// Inspect inspects an encrypted file and returns information about it.
++func Inspect(src io.Reader) (*FileInfo, error) {
++	hdr, payload, err := format.Parse(src)
++	if err != nil {
++		return nil, fmt.Errorf("failed to read header: %w", err)
++	}
++
++	recipientCounts := make(map[string]int64)
++	for _, r := range hdr.Recipients {
++		recipientCounts[r.Type] += 1
++	}
++
++	size, err := io.Copy(io.Discard, payload)
++	if err != nil {
++		return nil, fmt.Errorf("failed to read payload: %w", err)
++	}
++
++	return &FileInfo{
++		RecipientCounts: recipientCounts,
++		Version:         hdr.Version,
++		PayloadSize:     size,
++	}, nil
++}
++
+ // Decrypt decrypts a file encrypted to one or more identities.
+ //
+ // It returns a Reader reading the decrypted plaintext of the age file read
+diff --git a/age_test.go b/age_test.go
+index 3ae95bf3..45ae2a48 100644
+--- a/age_test.go
++++ b/age_test.go
+@@ -152,6 +152,45 @@ func TestEncryptDecryptX25519(t *testing.T) {
+ 	}
+ }
+ 
++func TestInspectX25519(t *testing.T) {
++	a, err := age.GenerateX25519Identity()
++	if err != nil {
++		t.Fatal(err)
++	}
++	b, err := age.GenerateX25519Identity()
++	if err != nil {
++		t.Fatal(err)
++	}
++	buf := &bytes.Buffer{}
++	w, err := age.Encrypt(buf, a.Recipient(), b.Recipient())
++	if err != nil {
++		t.Fatal(err)
++	}
++	if _, err := io.WriteString(w, helloWorld); err != nil {
++		t.Fatal(err)
++	}
++	if err := w.Close(); err != nil {
++		t.Fatal(err)
++	}
++
++	info, err := age.Inspect(buf)
++	if err != nil {
++		t.Fatal(err)
++	}
++
++	if count := len(info.RecipientCounts); count != 1 {
++		t.Errorf("recipient type count wrong: %v, expected %v", count, 1)
++	}
++
++	if count := info.RecipientCounts["X25519"]; count != 2 {
++		t.Errorf("x25519 recipient count wrong: %v, expected %v", count, 2)
++	}
++
++	if info.Version != "age-encryption.org/v1" {
++		t.Errorf("version wrong: %q, expected %q", info.Version, "age-encryption.org/v1")
++	}
++}
++
+ func TestEncryptDecryptScrypt(t *testing.T) {
+ 	password := "twitch.tv/filosottile"
+ 
+@@ -189,6 +228,44 @@ func TestEncryptDecryptScrypt(t *testing.T) {
+ 	}
+ }
+ 
++func TestInspectScrypt(t *testing.T) {
++	password := "twitch.tv/filosottile"
++
++	r, err := age.NewScryptRecipient(password)
++	if err != nil {
++		t.Fatal(err)
++	}
++	r.SetWorkFactor(15)
++	buf := &bytes.Buffer{}
++	w, err := age.Encrypt(buf, r)
++	if err != nil {
++		t.Fatal(err)
++	}
++	if _, err := io.WriteString(w, helloWorld); err != nil {
++		t.Fatal(err)
++	}
++	if err := w.Close(); err != nil {
++		t.Fatal(err)
++	}
++
++	info, err := age.Inspect(buf)
++	if err != nil {
++		t.Fatal(err)
++	}
++
++	if count := len(info.RecipientCounts); count != 1 {
++		t.Errorf("recipient type count wrong: %v, expected %v", count, 1)
++	}
++
++	if count := info.RecipientCounts["scrypt"]; count != 1 {
++		t.Errorf("scrypt recipient count wrong: %v, expected %v", count, 1)
++	}
++
++	if info.Version != "age-encryption.org/v1" {
++		t.Errorf("version wrong: %q, expected %q", info.Version, "age-encryption.org/v1")
++	}
++}
++
+ func TestParseIdentities(t *testing.T) {
+ 	tests := []struct {
+ 		name      string
+diff --git a/cmd/age/age.go b/cmd/age/age.go
+index 8d44cf5e..5d3a8bbf 100644
+--- a/cmd/age/age.go
++++ b/cmd/age/age.go
+@@ -7,6 +7,7 @@ package main
+ import (
+ 	"bufio"
+ 	"bytes"
++	"encoding/json"
+ 	"flag"
+ 	"fmt"
+ 	"io"
+@@ -107,12 +108,12 @@ func main() {
+ 	}
+ 
+ 	var (
+-		outFlag                          string
+-		decryptFlag, encryptFlag         bool
+-		passFlag, versionFlag, armorFlag bool
+-		recipientFlags                   multiFlag
+-		recipientsFileFlags              multiFlag
+-		identityFlags                    identityFlags
++		outFlag                               string
++		decryptFlag, encryptFlag, inspectFlag bool
++		passFlag, versionFlag, armorFlag      bool
++		recipientFlags                        multiFlag
++		recipientsFileFlags                   multiFlag
++		identityFlags                         identityFlags
+ 	)
+ 
+ 	flag.BoolVar(&versionFlag, "version", false, "print the version")
+@@ -120,6 +121,7 @@ func main() {
+ 	flag.BoolVar(&decryptFlag, "decrypt", false, "decrypt the input")
+ 	flag.BoolVar(&encryptFlag, "e", false, "encrypt the input")
+ 	flag.BoolVar(&encryptFlag, "encrypt", false, "encrypt the input")
++	flag.BoolVar(&inspectFlag, "inspect", false, "inspect the input")
+ 	flag.BoolVar(&passFlag, "p", false, "use a passphrase")
+ 	flag.BoolVar(&passFlag, "passphrase", false, "use a passphrase")
+ 	flag.StringVar(&outFlag, "o", "", "output to `FILE` (default stdout)")
+@@ -187,6 +189,9 @@ func main() {
+ 		if encryptFlag {
+ 			errorf("-e/--encrypt can't be used with -d/--decrypt")
+ 		}
++		if inspectFlag {
++			errorf("--inspect can't be used with -d/--decrypt")
++		}
+ 		if armorFlag {
+ 			errorWithHint("-a/--armor can't be used with -d/--decrypt",
+ 				"note that armored files are detected automatically")
+@@ -203,6 +208,28 @@ func main() {
+ 			errorWithHint("-R/--recipients-file can't be used with -d/--decrypt",
+ 				"did you mean to use -i/--identity to specify a private key?")
+ 		}
++	case inspectFlag:
++		if encryptFlag {
++			errorf("--encrypt can't be used with --inspect")
++		}
++		if armorFlag {
++			errorWithHint("-a/--armor can't be used with --inspect",
++				"--inspect handles armored files automatically")
++		}
++		if passFlag {
++			errorWithHint("-p/--passphrase can't be used with --inspect",
++				"--inspect operates on encrypted files")
++		}
++		if len(identityFlags) > 0 {
++			errorWithHint("-i/--identity can't be used with --inspect",
++				"--inspect operates on encrypted files")
++		}
++		if len(recipientFlags) > 0 {
++			errorf("-r/--recipient can't be used with --inspect")
++		}
++		if len(recipientsFileFlags) > 0 {
++			errorf("-R/--recipients-file can't be used with --inspect")
++		}
+ 	default: // encrypt
+ 		if len(identityFlags) > 0 && !encryptFlag {
+ 			errorWithHint("-i/--identity and -j can't be used in encryption mode unless symmetric encryption is explicitly selected with -e/--encrypt",
+@@ -255,7 +282,7 @@ func main() {
+ 		out = f
+ 	} else if term.IsTerminal(int(os.Stdout.Fd())) {
+ 		if name != "-" {
+-			if decryptFlag {
++			if decryptFlag || inspectFlag {
+ 				// TODO: buffer the output and check it's printable.
+ 			} else if !armorFlag {
+ 				// If the output wouldn't be armored, refuse to send binary to
+@@ -279,6 +306,8 @@ func main() {
+ 		decryptPass(in, out)
+ 	case decryptFlag:
+ 		decryptNotPass(identityFlags, in, out)
++	case inspectFlag:
++		inspect(in, out)
+ 	case passFlag:
+ 		encryptPass(in, out, armorFlag)
+ 	default:
+@@ -447,19 +476,7 @@ func decryptPass(in io.Reader, out io.Writer) {
+ }
+ 
+ func decrypt(identities []age.Identity, in io.Reader, out io.Writer) {
+-	rr := bufio.NewReader(in)
+-	if intro, _ := rr.Peek(len(crlfMangledIntro)); string(intro) == crlfMangledIntro ||
+-		string(intro) == utf16MangledIntro {
+-		errorWithHint("invalid header intro",
+-			"it looks like this file was corrupted by PowerShell redirection",
+-			"consider using -o or -a to encrypt files in PowerShell")
+-	}
+-
+-	if start, _ := rr.Peek(len(armor.Header)); string(start) == armor.Header {
+-		in = armor.NewReader(rr)
+-	} else {
+-		in = rr
+-	}
++	in = unwrapArmor(in)
+ 
+ 	r, err := age.Decrypt(in, identities...)
+ 	if err != nil {
+@@ -478,6 +495,35 @@ func passphrasePromptForDecryption() (string, error) {
+ 	return string(pass), nil
+ }
+ 
++func inspect(in io.Reader, out io.Writer) {
++	in = unwrapArmor(in)
++
++	info, err := age.Inspect(in)
++	if err != nil {
++		errorf("%v", err)
++	}
++
++	if err := json.NewEncoder(out).Encode(info); err != nil {
++		errorf("failed to json encode inspect output: %v", err)
++	}
++}
++
++func unwrapArmor(in io.Reader) io.Reader {
++	rr := bufio.NewReader(in)
++	if intro, _ := rr.Peek(len(crlfMangledIntro)); string(intro) == crlfMangledIntro ||
++		string(intro) == utf16MangledIntro {
++		errorWithHint("invalid header intro",
++			"it looks like this file was corrupted by PowerShell redirection",
++			"consider using -o or -a to encrypt files in PowerShell")
++	}
++
++	if start, _ := rr.Peek(len(armor.Header)); string(start) == armor.Header {
++		return armor.NewReader(rr)
++	}
++
++	return rr
++}
++
+ func identitiesToRecipients(ids []age.Identity) ([]age.Recipient, error) {
+ 	var recipients []age.Recipient
+ 	for _, id := range ids {
+diff --git a/internal/format/format.go b/internal/format/format.go
+index aa77b756..c075cf40 100644
+--- a/internal/format/format.go
++++ b/internal/format/format.go
+@@ -16,6 +16,7 @@ import (
+ )
+ 
+ type Header struct {
++	Version    string
+ 	Recipients []*Stanza
+ 	MAC        []byte
+ }
+@@ -105,7 +106,8 @@ func (w *WrappedBase64Encoder) LastLineIsEmpty() bool {
+ 	return w.written%ColumnsPerLine == 0
+ }
+ 
+-const intro = "age-encryption.org/v1\n"
++const version = "age-encryption.org/v1"
++const intro = version + "\n"
+ 
+ var stanzaPrefix = []byte("->")
+ var footerPrefix = []byte("---")
+@@ -235,7 +237,7 @@ func errorf(format string, a ...interface{}) error {
+ // Parse returns the header and a Reader that begins at the start of the
+ // payload.
+ func Parse(input io.Reader) (*Header, io.Reader, error) {
+-	h := &Header{}
++	h := &Header{Version: version}
+ 	rr := bufio.NewReader(input)
+ 
+ 	line, err := rr.ReadString('\n')
