@@ -10,6 +10,25 @@ let
   settingsFormat = pkgs.formats.json { };
   cleanedConfig = converge (filterAttrsRecursive (_: v: v != null && v != {})) cfg.settings;
 
+  # syncthing supports serving the gui over unix sockets. if that happens, the
+  # api is serverd over the unix socket as well. this module uses the api to
+  # merge the configuration. curl is used for this and supports unix sockets.
+  # however the arguments are slightly different from an http request. the
+  # variable `curlAddress` is set so that curl works with both unix sockets
+  # and http(s).
+  curlAddress = let matchResult = builtins.match "^unix://(.*)" cfg.guiAddress;
+                in if matchResult == null
+                # for http and https we do nothing
+                then cfg.guiAddress
+                # for unix sockets use the `--unix-socket` flag to tell curl
+                # where the socket is located in the filesystem. curl still
+                # expects a host segment in the http target location. that means
+                # the location must not start with a `/` character. that is why
+                # there is the `.` character at the end of the string. the dot
+                # will not show up in the actual http request.
+                else "--unix-socket ${builtins.head matchResult} ."
+                ;
+
   devices = mapAttrsToList (_: device: device // {
     deviceID = device.id;
   }) cfg.settings.devices;
@@ -64,14 +83,14 @@ let
       GET_IdAttrName = "deviceID";
       override = cfg.overrideDevices;
       conf = devices;
-      baseAddress = "${cfg.guiAddress}/rest/config/devices";
+      baseAddress = "${curlAddress}/rest/config/devices";
     };
     dirs = {
       new_conf_IDs = map (v: v.id) folders;
       GET_IdAttrName = "id";
       override = cfg.overrideFolders;
       conf = folders;
-      baseAddress = "${cfg.guiAddress}/rest/config/folders";
+      baseAddress = "${curlAddress}/rest/config/folders";
     };
   } [
     # Now for each of these attributes, write the curl commands that are
@@ -120,14 +139,14 @@ let
     (lib.subtractLists ["folders" "devices"])
     (map (subOption: ''
       curl -X PUT -d ${lib.escapeShellArg (builtins.toJSON cleanedConfig.${subOption})} \
-        ${cfg.guiAddress}/rest/config/${subOption}
+        ${curlAddress}/rest/config/${subOption}
     ''))
     (lib.concatStringsSep "\n")
   ]) + ''
     # restart Syncthing if required
-    if curl ${cfg.guiAddress}/rest/config/restart-required |
+    if curl ${curlAddress}/rest/config/restart-required |
        ${jq} -e .requiresRestart > /dev/null; then
-        curl -X POST ${cfg.guiAddress}/rest/system/restart
+        curl -X POST ${curlAddress}/rest/system/restart
     fi
   '');
 in {
