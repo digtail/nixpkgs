@@ -13,6 +13,10 @@ buildGoModule rec {
 
   vendorHash = "sha256-5We4OYoexzzSF1AkxuGCUwuYJ3Wra+T6mCcT4XYgzhU=";
 
+  patches = [
+    ./inspect-ability.patch
+  ];
+
   ldflags = [
     "-s" "-w" "-X main.Version=${version}"
   ];
