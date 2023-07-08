@@ -8,7 +8,7 @@ let
 
   dhcpInterfaces = lib.attrNames (lib.filterAttrs (iface: v: v.useDHCP == true) (config.networking.interfaces or {}));
   doDhcp = cfg.udhcpc.enable || dhcpInterfaces != [];
-  dhcpIfShellExpr = if config.networking.useDHCP
+  dhcpIfShellExpr = if config.networking.useDHCP || cfg.udhcpc.enable
                       then "$(ls /sys/class/net/ | grep -v ^lo$)"
                       else lib.concatMapStringsSep " " lib.escapeShellArg dhcpInterfaces;
 
