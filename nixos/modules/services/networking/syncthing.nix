@@ -51,15 +51,20 @@ let
     # be careful not to leak secrets in the filesystem or in process listings
     umask 0077
 
-    # get the api key by parsing the config.xml
-    while
-        ! ${pkgs.libxml2}/bin/xmllint \
-            --xpath 'string(configuration/gui/apikey)' \
-            ${cfg.configDir}/config.xml \
-            >"$RUNTIME_DIRECTORY/api_key"
-    do sleep 1; done
 
-    (printf "X-API-Key: "; cat "$RUNTIME_DIRECTORY/api_key") >"$RUNTIME_DIRECTORY/headers"
+    storeApiKey() {
+      # get the api key by parsing the config.xml
+      while
+          ! ${pkgs.libxml2}/bin/xmllint \
+              --xpath 'string(configuration/gui/apikey)' \
+              ${cfg.configDir}/config.xml \
+              >"$RUNTIME_DIRECTORY/api_key"
+      do sleep 1; done
+
+      (printf "X-API-Key: "; cat "$RUNTIME_DIRECTORY/api_key") >"$RUNTIME_DIRECTORY/headers"
+    }
+
+    storeApiKey
 
     curl() {
         ${pkgs.curl}/bin/curl -sSLk -H "@$RUNTIME_DIRECTORY/headers" \
@@ -139,6 +144,12 @@ let
       } ${
         curlAddressArgs "/rest/config/${subOption}"
       }
+      # if there was a change to the gui section, the apiKey always get reset.
+      # because of this, later api calls will fail. therefore copy the api key
+      # from the config file to our curl headers file.
+      if [ "${subOption}" = "gui" ]; then
+        storeApiKey
+      fi
     ''))
     (lib.concatStringsSep "\n")
   ]) + ''
