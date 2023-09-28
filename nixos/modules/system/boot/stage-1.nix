@@ -621,6 +621,11 @@ in
             also for past generations, so if secrets are moved or deleted
             you will also have to garbage collect the generations that
             use those secrets.
+
+            This is supported by mutliple loaders, notably systemd-boot and
+            grub. Depending on the hardware `generic-extlinux-compatible`
+            may support this, see
+            {option}`boot.loader.generic-extlinux-compatible.enableSecrets`.
           '';
         example = literalExpression
           ''
