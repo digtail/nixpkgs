@@ -1,4 +1,4 @@
-{ pkgs, version, configTxt }:
+{ config, pkgs, version, configTxt }:
 
 let
   isAarch64 = pkgs.stdenv.hostPlatform.isAarch64;
@@ -20,6 +20,7 @@ let
 
   extlinuxConfBuilder =
     import ../generic-extlinux-compatible/extlinux-conf-builder.nix {
+      inherit config;
       pkgs = pkgs.buildPackages;
     };
 in
