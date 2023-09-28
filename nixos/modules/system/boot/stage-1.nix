@@ -621,6 +621,11 @@ in
             path the secret should have inside the initrd, the value
             is the path it should be copied from (or null for the same
             path inside and out).
+
+            This is supported by mutliple loaders, notably systemd-boot and
+            grub. Depending on the hardware `generic-extlinux-compatible`
+            may support this, see
+            {option}`boot.loader.generic-extlinux-compatible.enableSecrets`.
           '';
         example = literalExpression
           ''
