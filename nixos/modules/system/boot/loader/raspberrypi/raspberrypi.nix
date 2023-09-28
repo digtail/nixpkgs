@@ -5,7 +5,7 @@ with lib;
 let
   cfg = config.boot.loader.raspberryPi;
 
-  builderUboot = import ./uboot-builder.nix { inherit pkgs configTxt; inherit (cfg) version; };
+  builderUboot = import ./uboot-builder.nix { inherit config pkgs configTxt; inherit (cfg) version; };
   builderGeneric = import ./raspberrypi-builder.nix { inherit pkgs configTxt; };
 
   builder =
@@ -142,6 +142,7 @@ in
         assertion = !pkgs.stdenv.hostPlatform.isAarch64 || cfg.version >= 3;
         message = "Only Raspberry Pi >= 3 supports aarch64.";
       };
+      boot.loader.supportsInitrdSecrets = cfg.uboot.enable;
 
       system.build.installBootLoader = builder;
       system.boot.loader.id = "raspberrypi";
