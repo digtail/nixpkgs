@@ -14,18 +14,6 @@ in
 
     package = mkPackageOption pkgs "ntfy-sh" { };
 
-    user = mkOption {
-      default = "ntfy-sh";
-      type = types.str;
-      description = lib.mdDoc "User the ntfy-sh server runs under.";
-    };
-
-    group = mkOption {
-      default = "ntfy-sh";
-      type = types.str;
-      description = lib.mdDoc "Primary group of ntfy-sh user.";
-    };
-
     settings = mkOption {
       type = types.submodule {
         freeformType = settingsFormat.type;
@@ -93,7 +81,8 @@ in
 
         serviceConfig = {
           ExecStart = "${cfg.package}/bin/ntfy serve -c ${configuration}";
-          User = cfg.user;
+          User = "ntfy-sh";
+          Group = "ntfy-sh";
           StateDirectory = "ntfy-sh";
 
           DynamicUser = true;
@@ -113,17 +102,6 @@ in
           MemoryDenyWriteExecute = true;
           # Upstream Recommandation
           LimitNOFILE = 20500;
-        };
-      };
-
-      users.groups = optionalAttrs (cfg.group == "ntfy-sh") {
-        ntfy-sh = { };
-      };
-
-      users.users = optionalAttrs (cfg.user == "ntfy-sh") {
-        ntfy-sh = {
-          isSystemUser = true;
-          group = cfg.group;
         };
       };
     };
