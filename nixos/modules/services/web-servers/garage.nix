@@ -6,6 +6,32 @@ let
   cfg = config.services.garage;
   toml = pkgs.formats.toml { };
   configFile = toml.generate "garage.toml" cfg.settings;
+
+  dataOptions.options = {
+    capacity = mkOption {
+      description = lib.mdDoc ''
+        The capacity this storage location provides. Unit postfixes like "TB" or
+        "GiB" are supported, see 
+        [https://crates.io/crates/bytesize](https://crates.io/crates/bytesize).
+      '';
+      type = types.str;
+    };
+
+    path = mkOption {
+      description = lib.mdDoc ''
+        The location to the storage directory.
+      '';
+      type = types.path;
+    };
+
+    read_only = mkOption {
+      default = false;
+      description = lib.mdDoc ''
+        Whether this storage location is read only.
+      '';
+      type = types.bool;
+    };
+  };
 in
 {
   meta = {
@@ -49,7 +75,7 @@ in
 
           data_dir = mkOption {
             default = "/var/lib/garage/data";
-            type = types.path;
+            type = types.either types.path (types.listOf (types.submodule dataOptions));
             description = lib.mdDoc "The main data storage, put this on your large storage (e.g. high capacity HDD)";
           };
 
@@ -86,7 +112,20 @@ in
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/garage server";
 
-        StateDirectory = mkIf (hasPrefix "/var/lib/garage" cfg.settings.data_dir || hasPrefix "/var/lib/garage" cfg.settings.metadata_dir) "garage";
+        StateDirectory = let
+          useStateDirectory =
+            any (hasPrefix "/var/lib/garage") list;
+          list =
+            [
+              cfg.settings.metadata_dir
+            ]
+            ++ (
+              if isString cfg.settings.data_dir
+              then [cfg.settings.data_dir]
+              else forEach cfg.settings.data_dir (v: v.path)
+            );
+        in mkIf useStateDirectory "garage";
+
         DynamicUser = lib.mkDefault true;
         ProtectHome = true;
         NoNewPrivileges = true;
