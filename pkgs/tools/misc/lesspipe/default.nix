@@ -14,6 +14,7 @@
 , coreutils
 , gnused
 , gnutar
+, glibc
 , iconv
 , ncurses
 }:
@@ -60,6 +61,7 @@ stdenv.mkDerivation rec {
         gnutar
         iconv
         procps
+        glibc
         ncurses
       ];
       keep = [ "$prog" "$c1" "$c2" "$c3" "$c4" "$c5" "$cmd" "$colorizer" "$HOME" ];
