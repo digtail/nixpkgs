@@ -2,17 +2,14 @@
 
 stdenv.mkDerivation rec {
   pname = "mdadm";
-  version = "4.3";
+  version = "4.2";
 
   src = fetchurl {
     url = "mirror://kernel/linux/utils/raid/mdadm/mdadm-${version}.tar.xz";
-    sha256 = "sha256-QWcnrh8QgOpuMJDOo23QdoJvw2kVHjarc2VXupIZb58=";
+    sha256 = "sha256-RhwhVnCGS7dKTRo2IGhKorL4KW3/oGdD8m3aVVes8B0=";
   };
 
-  patches = [
-    ./no-self-references.patch
-    ./fix-hardcoded-mapdir.patch
-  ];
+  patches = [ ./no-self-references.patch ];
 
   makeFlags = [
     "NIXOS=1" "INSTALL=install" "BINDIR=$(out)/sbin"
@@ -49,7 +46,7 @@ stdenv.mkDerivation rec {
 
   meta = with lib; {
     description = "Programs for managing RAID arrays under Linux";
-    homepage = "https://git.kernel.org/pub/scm/utils/mdadm/mdadm.git";
+    homepage = "http://neil.brown.name/blog/mdadm";
     license = licenses.gpl2;
     mainProgram = "mdadm";
     maintainers = with maintainers; [ ekleog ];
