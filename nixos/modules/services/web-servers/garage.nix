@@ -70,7 +70,18 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.enable (let
+    useStateDirectory = any (hasPrefix "/var/lib/garage") (
+      [
+        cfg.settings.metadata_dir
+      ]
+      ++ (
+        if isString cfg.settings.data_dir
+        then [cfg.settings.data_dir]
+        else forEach cfg.settings.data_dir (v: v.path)
+      )
+    );
+  in {
 
     assertions = [
       # We removed our module-level default for replication_mode. If a user upgraded
@@ -136,7 +147,7 @@ in
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/garage server";
 
-        StateDirectory = mkIf (hasPrefix "/var/lib/garage" cfg.settings.data_dir || hasPrefix "/var/lib/garage" cfg.settings.metadata_dir) "garage";
+        StateDirectory = mkIf useStateDirectory "garage";
         DynamicUser = lib.mkDefault true;
         ProtectHome = true;
         NoNewPrivileges = true;
@@ -146,5 +157,5 @@ in
         RUST_LOG = lib.mkDefault "garage=${cfg.logLevel}";
       } // cfg.extraEnvironment;
     };
-  };
+  });
 }
