@@ -67,6 +67,7 @@ let
       "-D overlay-xcompile=OFF"
       "-D oss=OFF"
       "-D warnings-as-errors=OFF" # conversion error workaround
+      "-D CMAKE_CXX_STANDARD=17" # protobuf >22 requires C++ 17
     ] ++ lib.optional (!speechdSupport) "-D speechd=OFF"
       ++ lib.optional (!pulseSupport) "-D pulseaudio=OFF"
       ++ lib.optional (!pipewireSupport) "-D pipewire=OFF"
