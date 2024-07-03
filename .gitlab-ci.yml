@@ -1,0 +1,21 @@
+variables:
+  PULL_NIXOS_NIXPKGS:
+    value: 'false'
+    description: "Update nixpkgs input in flake.lock"
+
+stages:
+  - pull-nixos-nixpkgs-master
+
+pull-nixos-nixpkgs-master:
+  stage: pull-nixos-nixpkgs-master
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" || $PULL_NIXOS_NIXPKGS == 'true'
+  tags:
+    - nix
+  before_script:
+    - git config --global user.name ForkBot
+    - git config --global user.email fork-nixpkgs-with@yuka.dev
+    - chmod 700 "$PWD"
+  script:
+    - git pull https://github.com/nixos/nixpkgs master --no-rebase --ff
+    - git push "https://${GITLAB_ACCESS_TOKEN}@${CI_REPOSITORY_URL#*@}" HEAD:master
