@@ -50,12 +50,14 @@ in stdenv.mkDerivation rec {
 
   patches = [
     ./module-dir.patch
+  ]
+  ++ lib.optional (stdenv.buildPlatform.isMusl)
     (fetchpatch {
       name = "musl.patch";
       url = "https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/patch/?id=11eb9bc67c319900ab00523997323a97d2d08ad2";
       hash = "sha256-CYG615elMWces6QGQRg2H/NL7W4XsG9Zvz5H+xsdFFo=";
     })
-  ] ++ lib.optional withStatic ./enable-static.patch;
+  ++ lib.optional withStatic ./enable-static.patch;
 
   postInstall = ''
     for prog in rmmod insmod lsmod modinfo modprobe depmod; do
