@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i python -p python3.pkgs.joblib python3.pkgs.click python3.pkgs.click-log nix nix-prefetch-git nix-universal-prefetch prefetch-yarn-deps prefetch-npm-deps
+#! nix-shell -i python -p python3.pkgs.joblib python3.pkgs.click python3.pkgs.click-log nix nix-prefetch-git nurl prefetch-yarn-deps prefetch-npm-deps
 """
 electron updater
 
@@ -304,10 +304,11 @@ def supported_version_range() -> range:
 
 @memory.cache
 def get_repo_hash(fetcher: str, args: dict) -> str:
-    cmd = ["nix-universal-prefetch", fetcher]
+    expr = f"with import <nixpkgs> {{}}; {fetcher} {{ "
     for arg_name, arg in args.items():
-        cmd.append(f"--{arg_name}")
-        cmd.append(arg)
+        expr += f"{arg_name} = \"{arg}\"; "
+    expr += "}"
+    cmd = ["nurl", "-e", expr]
 
     print(" ".join(cmd), file=sys.stderr)
     out = subprocess.check_output(cmd)
