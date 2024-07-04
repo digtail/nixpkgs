@@ -17,5 +17,6 @@ pull-nixos-nixpkgs-master:
     - git config --global user.email fork-nixpkgs-with@yuka.dev
     - chmod 700 "$PWD"
   script:
-    - git pull https://github.com/nixos/nixpkgs master --no-rebase --ff
+    - git fetch https://github.com/nixos/nixpkgs master
+    - git merge FETCH_HEAD
     - git push "https://${GITLAB_ACCESS_TOKEN}@${CI_REPOSITORY_URL#*@}" HEAD:master
