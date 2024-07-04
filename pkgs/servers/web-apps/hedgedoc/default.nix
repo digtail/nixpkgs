@@ -6,7 +6,7 @@
 , yarn
 , makeBinaryWrapper
 , nodejs
-, python3
+, python311
 , nixosTests
 }:
 
@@ -52,7 +52,7 @@ in stdenv.mkDerivation {
   nativeBuildInputs = [
     makeBinaryWrapper
     yarn
-    python3 # needed for sqlite node-gyp
+    python311 # needed for sqlite node-gyp, >=3.12 no longer has distutils
   ];
 
   buildInputs = [
