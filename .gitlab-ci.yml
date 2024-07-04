@@ -3,11 +3,8 @@ variables:
     value: 'false'
     description: "Update nixpkgs input in flake.lock"
 
-stages:
-  - pull-nixos-nixpkgs-master
-
 pull-nixos-nixpkgs-master:
-  stage: pull-nixos-nixpkgs-master
+  needs: []
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" || $PULL_NIXOS_NIXPKGS == 'true'
   tags:
@@ -20,3 +17,21 @@ pull-nixos-nixpkgs-master:
     - git fetch https://github.com/nixos/nixpkgs master
     - git merge FETCH_HEAD
     - git push "https://${GITLAB_ACCESS_TOKEN}@${CI_REPOSITORY_URL#*@}" HEAD:master
+
+populate-binary-cache-x86_64-linux:
+  needs: []
+  tags:
+    - nix-x86_64-linux
+  script:
+    - nix profile install -f . attic-client
+    - "attic login cyberchaos https://cache.cyberchaos.dev $ATTIC_TOKEN"
+    - attic push musl $(nix build -f . electron_29 electron_30 --print-out-paths)
+
+populate-binary-cache-aarch64-linux:
+  needs: []
+  tags:
+    - nix-aarch64-linux
+  script:
+    - nix profile install -f . attic-client
+    - "attic login cyberchaos https://cache.cyberchaos.dev $ATTIC_TOKEN"
+    - attic push musl $(nix build -f . electron_29 electron_30 --print-out-paths)
