@@ -1229,8 +1229,6 @@ with pkgs;
 
   libredirect = callPackage ../build-support/libredirect { };
 
-  livecaptions = callPackage ../applications/misc/livecaptions { };
-
   madonctl = callPackage ../applications/misc/madonctl { };
 
   copyDesktopItems = makeSetupHook {
@@ -5917,8 +5915,6 @@ with pkgs;
   nsync = callPackage ../development/libraries/nsync { };
 
   nsz = with python3.pkgs; toPythonApplication nsz;
-
-  nwipe = callPackage ../tools/security/nwipe { };
 
   nx2elf = callPackage ../tools/compression/nx2elf { };
 
@@ -12985,8 +12981,6 @@ with pkgs;
   snapshot = callPackage ../applications/graphics/snapshot { };
 
   solvespace = callPackage ../applications/graphics/solvespace { };
-
-  sonarr = callPackage ../servers/sonarr { };
 
   sonata = callPackage ../applications/audio/sonata { };
 
@@ -27451,7 +27445,7 @@ with pkgs;
 
   octomap = callPackage ../development/libraries/octomap { };
 
-  odin = callPackage ../development/compilers/odin {
+  odin = callPackage ../by-name/od/odin/package.nix {
     inherit (pkgs.darwin.apple_sdk_11_0) MacOSX-SDK;
     inherit (pkgs.darwin.apple_sdk_11_0.frameworks) Security;
     llvmPackages = llvmPackages_18;
@@ -32568,13 +32562,6 @@ with pkgs;
 
   moonlight-embedded = callPackage ../applications/misc/moonlight-embedded { };
 
-  moonlight-qt = libsForQt5.callPackage ../applications/misc/moonlight-qt {
-    stdenv = if stdenv.isDarwin then darwin.apple_sdk_11_0.stdenv else stdenv;
-    SDL2 = buildPackages.SDL2.override {
-      drmSupport = stdenv.isLinux;
-    };
-  };
-
   mooSpace = callPackage ../applications/audio/mooSpace { };
 
   mop = callPackage ../applications/misc/mop { };
@@ -33814,8 +33801,6 @@ with pkgs;
   };
 
   rednotebook = python3Packages.callPackage ../applications/editors/rednotebook { };
-
-  remnote = callPackage ../applications/misc/remnote { };
 
   remotebox = callPackage ../applications/virtualization/remotebox { };
 
