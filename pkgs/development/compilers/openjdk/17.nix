@@ -70,6 +70,7 @@ let
         hash = "sha256-Qcm3ZmGCOYLZcskNjj7DYR85R4v07vYvvavrVOYL8vg=";
       })
 
+    ] ++ lib.optionals stdenv.hostPlatform.isMusl [
       # Backport fixes for musl 1.2.4 which are already applied in jdk21+
       # Fetching patch from chimera because they already went through the effort of rebasing it onto jdk17
       (fetchurl {
