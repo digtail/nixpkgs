@@ -56,26 +56,29 @@ stdenv.mkDerivation rec {
       url = "https://raw.githubusercontent.com/alpinelinux/aports/cb880042d48d77af412d4688f24b8310ae44f55f/main/nfs-utils/musl-getservbyport.patch";
       sha256 = "1fqws9dz8n1d9a418c54r11y3w330qgy2652dpwcy96cm44sqyhf";
     })
+  ] ++ [
+    (fetchurl {
+      url = "https://raw.githubusercontent.com/alpinelinux/aports/2709eb54b0846f08aa04514bbc8c4a3b2a16a144/main/nfs-utils/include-unistd.patch";
+      hash = "sha256-+jRUyh0gDoBqzYRKU/yMlLsdvApi592YJTTrn9rIDBw=";
+    })
   ];
 
   postPatch =
     ''
       patchShebangs tests
-      sed -i "s,/usr/sbin,$out/bin,g" utils/statd/statd.c
+      substituteInPlace utils/statd/statd.c --replace-fail "/usr/sbin" "$out/bin"
       sed -i "s,^PATH=.*,PATH=$out/bin:${statdPath}," utils/statd/start-statd
 
       configureFlags="--with-start-statd=$out/bin/start-statd $configureFlags"
 
       substituteInPlace systemd/nfs-utils.service \
-        --replace "/bin/true" "${coreutils}/bin/true"
+        --replace-fail "/bin/true" "${coreutils}/bin/true"
 
       substituteInPlace tools/nfsrahead/Makefile.in systemd/Makefile.in \
-        --replace "/usr/lib/udev/rules.d/" "$out/lib/udev/rules.d/"
+        --replace-fail "/usr/lib/udev/rules.d/" "$out/lib/udev/rules.d/"
 
       substituteInPlace utils/mount/Makefile.in \
-        --replace "chmod 4511" "chmod 0511"
-
-      sed '1i#include <stdint.h>' -i support/nsm/rpc.c
+        --replace-fail "chmod 4511" "chmod 0511"
     '';
 
   makeFlags = [
