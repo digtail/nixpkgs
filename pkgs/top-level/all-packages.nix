@@ -28582,15 +28582,9 @@ with pkgs;
 
   martian-mono = callPackage ../data/fonts/martian-mono { };
 
-  marwaita = callPackage ../data/themes/marwaita { };
-
   marwaita-icons = callPackage ../by-name/ma/marwaita-icons/package.nix {
     inherit (kdePackages) breeze-icons;
   };
-
-  marwaita-manjaro = callPackage ../data/themes/marwaita-manjaro { };
-
-  marwaita-peppermint = callPackage ../data/themes/marwaita-peppermint { };
 
   marwaita-pop_os = callPackage ../data/themes/marwaita-pop_os { };
 
