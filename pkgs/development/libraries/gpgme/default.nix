@@ -40,6 +40,10 @@ stdenv.mkDerivation rec {
     ./python-310-312-remove-distutils.patch
     # Fix a test after disallowing compressed signatures in gpg (PR #180336)
     ./test_t-verify_double-plaintext.patch
+
+    # Fix for musl >1.2.4
+    # Submitted at https://dev.gnupg.org/D600, upstream is unresponsive
+    ./D600.diff
   ];
 
   postPatch = ''
