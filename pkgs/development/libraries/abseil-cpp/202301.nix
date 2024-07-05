@@ -44,5 +44,6 @@ stdenv.mkDerivation (finalAttrs: {
     license = licenses.asl20;
     platforms = platforms.all;
     maintainers = [ maintainers.andersk ];
+    broken = stdenv.hostPlatform.isMusl; # upgrade deps to newer protobuf instead of fixing this
   };
 })
