@@ -40,12 +40,6 @@ stdenv.mkDerivation rec {
     ./python-310-312-remove-distutils.patch
     # Fix a test after disallowing compressed signatures in gpg (PR #180336)
     ./test_t-verify_double-plaintext.patch
-
-    # https://dev.gnupg.org/D600
-    (fetchurl {
-      url = "https://files.gnupg.net/file/data/mad7zk7ntvna6kuytuqe/PHID-FILE-2tmfiqzipdwuec53dyfk/D600.diff";
-      hash = "sha256-58wEl9EGR5mqES6hTEsprRL99G6v2DdCxtmyX6jhpwE=";
-    })
   ];
 
   postPatch = ''
