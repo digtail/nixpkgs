@@ -95,7 +95,6 @@
 , withAudit ? true
   # compiles systemd-boot, assumes EFI is available.
 , withBootloader ? withEfi
-    && !stdenv.hostPlatform.isMusl
     # "Unknown 64-bit data model"
     && !stdenv.hostPlatform.isRiscV32
   # adds bzip2, lz4, xz and zstd
@@ -279,6 +278,7 @@ stdenv.mkDerivation (finalAttrs: {
       (musl-patches + "/0026-undef-stdin-for-references-using-stdin-as-a-struct-m.patch")
       (musl-patches + "/0027-adjust-header-inclusion-order-to-avoid-redeclaration.patch")
       (musl-patches + "/0028-build-path.c-avoid-boot-time-segfault-for-musl.patch")
+      ./0019-systemd-boot-disable-conflicting-wchar_t-on-musl.patch
     ]
   );
 
