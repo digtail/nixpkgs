@@ -67,5 +67,6 @@ stdenv.mkDerivation rec {
     '';
     platforms = platforms.unix;
     maintainers = with maintainers; [ thoughtpolice tmarkus ];
+    broken = stdenv.hostPlatform.isMusl; # hint: tbb_2021_11 works
   };
 }
