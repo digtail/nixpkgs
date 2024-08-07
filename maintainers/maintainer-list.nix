@@ -5536,6 +5536,12 @@
     name = "Duncan Dean";
     keys = [ { fingerprint = "9484 44FC E03B 05BA 5AB0  591E C37B 1C1D 44C7 86EE"; } ];
   };
+  dvaerum = {
+    email = "nixpkgs-maintainer@varum.dk";
+    github = "dvaerum";
+    githubId = 6872940;
+    name = "Dennis Værum";
+  };
   dvn0 = {
     email = "git@dvn.me";
     github = "dvn0";
@@ -9138,6 +9144,13 @@
     github = "JamieMagee";
     githubId = 1358764;
     name = "Jamie Magee";
+  };
+  janik = {
+    name = "Janik";
+    email = "janik@aq0.de";
+    matrix = "@janik0:matrix.org";
+    github = "Janik-Haag";
+    githubId = 80165193;
   };
   jankaifer = {
     name = "Jan Kaifer";

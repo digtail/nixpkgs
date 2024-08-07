@@ -34,12 +34,12 @@
 , which
 , icu
 , boost
-, jdk17
+, jdk21
 , ant
 , cups
 , xorg
 , fontforge
-, jre17_minimal
+, jre21_minimal
 , openssl
 , gperf
 , cppunit
@@ -170,7 +170,7 @@ let
     ];
   };
 
-  jre' = jre17_minimal.override {
+  jre' = jre21_minimal.override {
     modules = [ "java.base" "java.desktop" "java.logging" "java.sql" ];
   };
 
@@ -295,7 +295,7 @@ in stdenv.mkDerivation (finalAttrs: {
     bison
     fontforge
     gdb
-    jdk17
+    jdk21
     libtool
     pkg-config
   ];
