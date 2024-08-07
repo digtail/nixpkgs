@@ -8,6 +8,8 @@
 , reproducibleBuild ? true
 , profiledCompiler ? false
 , langJit ? false
+, langRust ? false
+, cargo
 , staticCompiler ? false
 , enableShared ? stdenv.targetPlatform.hasSharedLibraries
 , enableLTO ? stdenv.hostPlatform.hasSharedLibraries
@@ -128,6 +130,7 @@ let
       inherit
         binutils
         buildPackages
+        cargo
         cloog
         withoutTargetLibc
         darwin
@@ -153,6 +156,7 @@ let
         langJit
         langObjC
         langObjCpp
+        langRust
         lib
         libcCross
         libmpc
@@ -452,7 +456,7 @@ pipe ((callFile ./common/builder.nix {}) ({
       if (is8 && targetPlatform.isAvr) then []
       else if !(is48 || is49 || is6) then [ "aarch64-darwin" ]
       else platforms.darwin;
-  } // optionalAttrs is11 {
+  } // optionalAttrs is10 {
     badPlatforms = if targetPlatform != hostPlatform then [ "aarch64-darwin" ] else [ ];
   };
 } // optionalAttrs (!atLeast10 && stdenv.targetPlatform.isDarwin) {

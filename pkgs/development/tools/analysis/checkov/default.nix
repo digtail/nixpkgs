@@ -6,14 +6,14 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "checkov";
-  version = "3.2.207";
+  version = "3.2.219";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "bridgecrewio";
     repo = "checkov";
     rev = "refs/tags/${version}";
-    hash = "sha256-pqMzN7ON7Yv7IHlhW86DpJ0CGOmZum5by88+YA9bv24=";
+    hash = "sha256-PNWOT4vnlruRPoGSPcBy4GPxmuflVbF+UheIpBo14kE=";
   };
 
   patches = [ ./flake8-compat-5.x.patch ];
@@ -123,6 +123,8 @@ python3.pkgs.buildPythonApplication rec {
     "test_get_cyclonedx_report"
     # Test fails on Hydra
     "test_sast_js_filtered_files_by_ts"
+    # Timing sensitive
+    "test_non_multiline_pair_time_limit_creating_report"
   ];
 
   disabledTestPaths = [
