@@ -56,26 +56,32 @@ stdenv.mkDerivation rec {
       url = "https://raw.githubusercontent.com/alpinelinux/aports/cb880042d48d77af412d4688f24b8310ae44f55f/main/nfs-utils/musl-getservbyport.patch";
       sha256 = "1fqws9dz8n1d9a418c54r11y3w330qgy2652dpwcy96cm44sqyhf";
     })
+  ] ++ [
+    # backport of includes fix for non-glibc
+    # https://git.linux-nfs.org/?p=steved/nfs-utils.git;a=commit;h=bb25f3f594ddf85e5826e931eaaa35874f6a4204
+    (fetchpatch {
+      name = "reexport-fsidd-reexport-c-Re-add-missing-includes.patch";
+      url = "https://git.linux-nfs.org/?p=steved/nfs-utils.git;a=patch;h=bb25f3f594ddf85e5826e931eaaa35874f6a4204";
+      hash = "sha256-gnYoAbz6OXRWlv6q5P17ZKx6/HN/eJpKNwpHhv2Y1y8=";
+    })
   ];
 
   postPatch =
     ''
       patchShebangs tests
-      sed -i "s,/usr/sbin,$out/bin,g" utils/statd/statd.c
+      substituteInPlace utils/statd/statd.c --replace-fail "/usr/sbin" "$out/bin"
       sed -i "s,^PATH=.*,PATH=$out/bin:${statdPath}," utils/statd/start-statd
 
       configureFlags="--with-start-statd=$out/bin/start-statd $configureFlags"
 
       substituteInPlace systemd/nfs-utils.service \
-        --replace "/bin/true" "${coreutils}/bin/true"
+        --replace-fail "/bin/true" "${coreutils}/bin/true"
 
       substituteInPlace tools/nfsrahead/Makefile.in systemd/Makefile.in \
-        --replace "/usr/lib/udev/rules.d/" "$out/lib/udev/rules.d/"
+        --replace-fail "/usr/lib/udev/rules.d/" "$out/lib/udev/rules.d/"
 
       substituteInPlace utils/mount/Makefile.in \
-        --replace "chmod 4511" "chmod 0511"
-
-      sed '1i#include <stdint.h>' -i support/nsm/rpc.c
+        --replace-fail "chmod 4511" "chmod 0511"
     '';
 
   makeFlags = [

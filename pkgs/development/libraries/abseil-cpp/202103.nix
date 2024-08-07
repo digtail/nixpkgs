@@ -59,5 +59,7 @@ stdenv.mkDerivation rec {
     license = licenses.asl20;
     platforms = platforms.all;
     maintainers = [ maintainers.andersk ];
+    # upgrade deps to newer protobuf instead of fixing this
+    broken = stdenv.hostPlatform.isMusl && lib.versionAtLeast stdenv.cc.libc.version "1.2.4";
   };
 }
