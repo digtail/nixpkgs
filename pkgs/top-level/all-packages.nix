@@ -29293,7 +29293,7 @@ with pkgs;
   cardo = callPackage ../data/fonts/cardo { };
 
   cage = callPackage ../applications/window-managers/cage {
-    wlroots = wlroots_0_16;
+    wlroots = wlroots_0_17;
   };
 
   calf = callPackage ../applications/audio/calf {
@@ -30989,7 +30989,6 @@ with pkgs;
   super-productivity = callPackage ../applications/office/super-productivity { };
 
   inherit (callPackages ../development/libraries/wlroots {})
-    wlroots_0_16
     wlroots_0_17
     wlroots_0_18;
 
