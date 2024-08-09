@@ -17351,8 +17351,6 @@ with pkgs;
 
   ansible-doctor = callPackage ../tools/admin/ansible/doctor.nix { };
 
-  ansible-navigator = with python3Packages; toPythonApplication ansible-navigator;
-
   dbus-test-runner = callPackage ../development/tools/dbus-test-runner { };
 
   doq = callPackage ../development/tools/misc/doq { };
@@ -25189,8 +25187,6 @@ with pkgs;
   hqplayerd = callPackage ../servers/hqplayerd { };
 
   https-dns-proxy = callPackage ../servers/dns/https-dns-proxy { };
-
-  hydron = callPackage ../servers/hydron { };
 
   ic-keysmith = callPackage ../tools/security/ic-keysmith { };
 
