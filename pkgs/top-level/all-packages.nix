@@ -17121,15 +17121,26 @@ with pkgs;
 
   sparkleshare = callPackage ../applications/version-management/sparkleshare { };
 
-  spidermonkey_78 = callPackage ../development/interpreters/spidermonkey/78.nix {
-    inherit (darwin) libobjc;
-  };
-  spidermonkey_91 = callPackage ../development/interpreters/spidermonkey/91.nix {
-    inherit (darwin) libobjc;
-  };
-  spidermonkey_115 = callPackage ../development/interpreters/spidermonkey/115.nix {
-    inherit (darwin) libobjc;
-  };
+  inherit
+    ({
+      spidermonkey_78 = callPackage ../development/interpreters/spidermonkey/78.nix {
+        inherit (darwin) libobjc;
+      };
+      spidermonkey_91 = callPackage ../development/interpreters/spidermonkey/91.nix {
+        inherit (darwin) libobjc;
+      };
+      spidermonkey_115 = callPackage ../development/interpreters/spidermonkey/115.nix {
+        inherit (darwin) libobjc;
+      };
+      spidermonkey_128 = callPackage ../development/interpreters/spidermonkey/128.nix {
+        inherit (darwin) libobjc;
+      };
+    })
+    spidermonkey_78
+    spidermonkey_91
+    spidermonkey_115
+    spidermonkey_128
+    ;
 
   starlark-rust = callPackage ../development/interpreters/starlark-rust { };
 
@@ -17341,8 +17352,6 @@ with pkgs;
   ansible-builder = with python3Packages; toPythonApplication ansible-builder;
 
   ansible-doctor = callPackage ../tools/admin/ansible/doctor.nix { };
-
-  ansible-navigator = with python3Packages; toPythonApplication ansible-navigator;
 
   dbus-test-runner = callPackage ../development/tools/dbus-test-runner { };
 
@@ -25183,8 +25192,6 @@ with pkgs;
   hqplayerd = callPackage ../servers/hqplayerd { };
 
   https-dns-proxy = callPackage ../servers/dns/https-dns-proxy { };
-
-  hydron = callPackage ../servers/hydron { };
 
   ic-keysmith = callPackage ../tools/security/ic-keysmith { };
 
@@ -36263,8 +36270,6 @@ with pkgs;
   powermanga = callPackage ../games/powermanga { };
 
   pysolfc = python3Packages.callPackage ../games/pysolfc { };
-
-  qq = callPackage ../applications/networking/instant-messengers/qq { };
 
   qqwing = callPackage ../games/qqwing { };
 
