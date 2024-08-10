@@ -101,6 +101,7 @@
 , withSamba ? withFullDeps && !stdenv.isDarwin && withGPLv3 # Samba protocol
 , withSdl2 ? withSmallDeps
 , withShaderc ? withFullDeps && !stdenv.isDarwin && lib.versionAtLeast version "5.0"
+, withSnappy ? withFullDeps # Snappy compression, needed for hap encoding
 , withSoxr ? withHeadlessDeps # Resampling via soxr
 , withSpeex ? withHeadlessDeps # Speex de/encoder
 , withSrt ? withHeadlessDeps # Secure Reliable Transport (SRT) protocol
@@ -299,6 +300,7 @@
 , samba
 , SDL2
 , shaderc
+, snappy
 , soxr
 , speex
 , srt
@@ -410,11 +412,6 @@ stdenv.mkDerivation (finalAttrs: {
         name = "fix_build_failure_due_to_PropertyKey_EncoderID";
         url = "https://git.ffmpeg.org/gitweb/ffmpeg.git/patch/cb049d377f54f6b747667a93e4b719380c3e9475";
         hash = "sha256-sxRXKKgUak5vsQTiV7ge8vp+N22CdTIvuczNgVRP72c=";
-      })
-      (fetchpatch2 {
-        name = "fix_vulkan_av1";
-        url = "https://git.ffmpeg.org/gitweb/ffmpeg.git/patch/e06ce6d2b45edac4a2df04f304e18d4727417d24";
-        hash = "sha256-73mlX1rdJrguw7OXaSItfHtI7gflDrFj+7SepVvvUIg=";
       })
       (fetchpatch2 {
         name = "CVE-2024-31582.patch";
@@ -633,6 +630,7 @@ stdenv.mkDerivation (finalAttrs: {
   ] ++ optionals (versionAtLeast version "5.0") [
     (enableFeature withShaderc "libshaderc")
   ] ++ [
+    (enableFeature withSnappy "libsnappy")
     (enableFeature withSoxr "libsoxr")
     (enableFeature withSpeex "libspeex")
     (enableFeature withSrt "libsrt")
@@ -773,6 +771,7 @@ stdenv.mkDerivation (finalAttrs: {
   ++ optionals withSamba [ samba ]
   ++ optionals withSdl2 [ SDL2 ]
   ++ optionals withShaderc [ shaderc ]
+  ++ optionals withSnappy [ snappy ]
   ++ optionals withSoxr [ soxr ]
   ++ optionals withSpeex [ speex ]
   ++ optionals withSrt [ srt ]
