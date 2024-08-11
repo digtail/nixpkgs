@@ -8932,8 +8932,6 @@ with pkgs;
     packages = config.ihaskell.packages or (_: []);
   };
 
-  ijq = callPackage ../development/tools/ijq { };
-
   iruby = callPackage ../applications/editors/jupyter-kernels/iruby { };
 
   ike-scan = callPackage ../tools/security/ike-scan { };
@@ -38765,8 +38763,6 @@ with pkgs;
     nix-prefetch-scripts;
 
   nix-query-tree-viewer = callPackage ../tools/nix/nix-query-tree-viewer { };
-
-  nix-update = callPackage ../tools/package-management/nix-update { };
 
   nix-update-source = callPackage ../tools/package-management/nix-update-source { };
 
