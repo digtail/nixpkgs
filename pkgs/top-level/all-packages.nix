@@ -3622,10 +3622,6 @@ with pkgs;
 
   doona = callPackage ../tools/security/doona { };
 
-  dotter = callPackage ../tools/misc/dotter {
-    inherit (darwin.apple_sdk.frameworks) CoreServices;
-  };
-
   droidcam = callPackage ../applications/video/droidcam { };
 
   droidmote = callPackage ../tools/inputmethods/droidmote { };
@@ -6922,8 +6918,6 @@ with pkgs;
   cpio = callPackage ../tools/archivers/cpio { };
 
   cpufetch = callPackage ../tools/misc/cpufetch { };
-
-  crackmapexec = callPackage ../tools/security/crackmapexec { };
 
   crackxls = callPackage ../tools/security/crackxls { };
 
@@ -24192,8 +24186,6 @@ with pkgs;
   vigra = callPackage ../development/libraries/vigra {
     hdf5 = hdf5.override { usev110Api = true; };
   };
-
-  vkd3d-proton = callPackage ../development/libraries/vkd3d-proton {};
 
   vkdisplayinfo = callPackage ../tools/graphics/vkdisplayinfo { };
 
