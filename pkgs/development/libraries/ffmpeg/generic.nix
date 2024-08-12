@@ -98,9 +98,11 @@
 , withQuirc ? withFullDeps && lib.versionAtLeast version "7" # QR decoding
 , withRav1e ? withFullDeps # AV1 encoder (focused on speed and safety)
 , withRtmp ? withFullDeps # RTMP[E] support
+, withRubberband ? withFullDeps && withGPL # Rubberband filter
 , withSamba ? withFullDeps && !stdenv.isDarwin && withGPLv3 # Samba protocol
 , withSdl2 ? withSmallDeps
 , withShaderc ? withFullDeps && !stdenv.isDarwin && lib.versionAtLeast version "5.0"
+, withShine ? withFullDeps # Fixed-point MP3 encoding
 , withSnappy ? withFullDeps # Snappy compression, needed for hap encoding
 , withSoxr ? withHeadlessDeps # Resampling via soxr
 , withSpeex ? withHeadlessDeps # Speex de/encoder
@@ -296,10 +298,12 @@
 , quirc
 , rav1e
 , rtmpdump
+, rubberband
 , twolame
 , samba
 , SDL2
 , shaderc
+, shine
 , snappy
 , soxr
 , speex
@@ -625,11 +629,13 @@ stdenv.mkDerivation (finalAttrs: {
   ] ++ [
     (enableFeature withRav1e "librav1e")
     (enableFeature withRtmp "librtmp")
+    (enableFeature withRubberband "librubberband")
     (enableFeature withSamba "libsmbclient")
     (enableFeature withSdl2 "sdl2")
   ] ++ optionals (versionAtLeast version "5.0") [
     (enableFeature withShaderc "libshaderc")
   ] ++ [
+    (enableFeature withShine "libshine")
     (enableFeature withSnappy "libsnappy")
     (enableFeature withSoxr "libsoxr")
     (enableFeature withSpeex "libspeex")
@@ -768,9 +774,11 @@ stdenv.mkDerivation (finalAttrs: {
   ++ optionals withQuirc [ quirc ]
   ++ optionals withRav1e [ rav1e ]
   ++ optionals withRtmp [ rtmpdump ]
+  ++ optionals withRubberband [ rubberband ]
   ++ optionals withSamba [ samba ]
   ++ optionals withSdl2 [ SDL2 ]
   ++ optionals withShaderc [ shaderc ]
+  ++ optionals withShine [ shine ]
   ++ optionals withSnappy [ snappy ]
   ++ optionals withSoxr [ soxr ]
   ++ optionals withSpeex [ speex ]
