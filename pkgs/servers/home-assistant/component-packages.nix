@@ -2,7 +2,7 @@
 # Do not edit!
 
 {
-  version = "2024.8.0";
+  version = "2024.8.1";
   components = {
     "3_day_blinds" = ps: with ps; [
     ];
@@ -645,7 +645,7 @@
     "coautilities" = ps: with ps; [
     ];
     "coinbase" = ps: with ps; [
-    ]; # missing inputs: coinbase
+    ]; # missing inputs: coinbase coinbase-advanced-py
     "color_extractor" = ps: with ps; [
       colorthief
     ];
@@ -1265,7 +1265,8 @@
       pymodbus
     ];
     "flexit_bacnet" = ps: with ps; [
-    ]; # missing inputs: flexit_bacnet
+      flexit-bacnet
+    ];
     "flexom" = ps: with ps; [
     ];
     "flic" = ps: with ps; [
@@ -1583,7 +1584,8 @@
       pycec
     ];
     "heatmiser" = ps: with ps; [
-    ]; # missing inputs: heatmiserV3
+      heatmiserv3
+    ];
     "heiwa" = ps: with ps; [
     ];
     "heos" = ps: with ps; [
@@ -1991,7 +1993,8 @@
       isal
     ];
     "islamic_prayer_times" = ps: with ps; [
-    ]; # missing inputs: prayer-times-calculator-offline
+      prayer-times-calculator-offline
+    ];
     "ismartwindow" = ps: with ps; [
     ];
     "israel_rail" = ps: with ps; [
@@ -5045,6 +5048,7 @@
     "fitbit"
     "fivem"
     "fjaraskupan"
+    "flexit_bacnet"
     "flic"
     "flick_electric"
     "flipr"
@@ -5182,6 +5186,7 @@
     "iqvia"
     "iron_os"
     "isal"
+    "islamic_prayer_times"
     "israel_rail"
     "ista_ecotrend"
     "isy994"

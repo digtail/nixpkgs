@@ -773,6 +773,8 @@ self: super: with self; {
 
   arnparse = callPackage ../development/python-modules/arnparse { };
 
+  array-api-strict = callPackage ../development/python-modules/array-api-strict { };
+
   array-record = callPackage ../development/python-modules/array-record { };
 
   arrayqueues = callPackage ../development/python-modules/arrayqueues { };
@@ -2739,6 +2741,8 @@ self: super: with self; {
 
   cxxfilt = callPackage ../development/python-modules/cxxfilt { };
 
+  cxxheaderparser = callPackage ../development/python-modules/cxxheaderparser { };
+
   cycler = callPackage ../development/python-modules/cycler { };
 
   cyclonedx-python-lib = callPackage ../development/python-modules/cyclonedx-python-lib { };
@@ -4536,6 +4540,8 @@ self: super: with self; {
 
   flexcache = callPackage ../development/python-modules/flexcache { };
 
+  flexit-bacnet = callPackage ../development/python-modules/flexit-bacnet { };
+
   flexmock = callPackage ../development/python-modules/flexmock { };
 
   flexparser = callPackage ../development/python-modules/flexparser { };
@@ -5515,6 +5521,8 @@ self: super: with self; {
 
   heapdict = callPackage ../development/python-modules/heapdict { };
 
+  heatmiserv3 = callPackage ../development/python-modules/heatmiserv3 { };
+
   heatshrink2 = callPackage ../development/python-modules/heatshrink2 { };
 
   heatzypy = callPackage ../development/python-modules/heatzypy { };
@@ -5556,6 +5564,8 @@ self: super: with self; {
   hickle = callPackage ../development/python-modules/hickle { };
 
   highdicom = callPackage ../development/python-modules/highdicom { };
+
+  highspy = callPackage ../development/python-modules/highspy { };
 
   hid = callPackage ../development/python-modules/hid {
     inherit (pkgs) hidapi;
@@ -6370,6 +6380,8 @@ self: super: with self; {
   json-home-client = callPackage ../development/python-modules/json-home-client { };
 
   json-merge-patch = callPackage ../development/python-modules/json-merge-patch { };
+
+  json-repair = callPackage ../development/python-modules/json-repair { };
 
   json-schema-for-humans = callPackage ../development/python-modules/json-schema-for-humans { };
 
@@ -7297,6 +7309,8 @@ self: super: with self; {
 
   lottie = callPackage ../development/python-modules/lottie { };
 
+  lox = callPackage ../development/python-modules/lox { };
+
   lpc-checksum = callPackage ../development/python-modules/lpc-checksum { };
 
   lrcalc-python = callPackage ../development/python-modules/lrcalc-python { };
@@ -7569,6 +7583,8 @@ self: super: with self; {
   mdx-truly-sane-lists = callPackage ../development/python-modules/mdx-truly-sane-lists { };
 
   md2gemini = callPackage ../development/python-modules/md2gemini { };
+
+  md2pdf = callPackage ../development/python-modules/md2pdf { };
 
   mdformat = callPackage ../development/python-modules/mdformat { };
   mdformat-admon = callPackage ../development/python-modules/mdformat-admon { };
@@ -9257,6 +9273,8 @@ self: super: with self; {
   numpy_2 = callPackage ../development/python-modules/numpy/2.nix { };
   numpy = if self.pythonOlder "3.13" then numpy_1 else numpy_2;
 
+  numpy-groupies = callPackage ../development/python-modules/numpy-groupies { };
+
   numpy-stl = callPackage ../development/python-modules/numpy-stl { };
 
   numpyro = callPackage ../development/python-modules/numpyro { };
@@ -9911,6 +9929,8 @@ self: super: with self; {
   pdfx = callPackage ../development/python-modules/pdfx { };
 
   pdm-backend = callPackage ../development/python-modules/pdm-backend { };
+
+  pdm-build-locked = callPackage ../development/python-modules/pdm-build-locked { };
 
   pdm-pep517 = callPackage ../development/python-modules/pdm-pep517 { };
 
@@ -10704,7 +10724,7 @@ self: super: with self; {
 
   praw = callPackage ../development/python-modules/praw { };
 
-  prayer-times-calculator = callPackage ../development/python-modules/prayer-times-calculator { };
+  prayer-times-calculator-offline = callPackage ../development/python-modules/prayer-times-calculator-offline { };
 
   precis-i18n = callPackage ../development/python-modules/precis-i18n { };
 
@@ -15754,6 +15774,8 @@ self: super: with self; {
   torchaudio-bin = callPackage ../development/python-modules/torchaudio/bin.nix {
     cudaPackages = pkgs.cudaPackages_12;
   };
+
+  torchcrepe = callPackage ../development/python-modules/torchcrepe { };
 
   torchdiffeq = callPackage ../development/python-modules/torchdiffeq { };
 
