@@ -21,16 +21,19 @@ let
 in
 python3.pkgs.buildPythonApplication rec {
   pname = "meson";
-  version = "1.5.0";
+  version = "1.5.1";
 
   src = fetchFromGitHub {
     owner = "mesonbuild";
     repo = "meson";
     rev = "refs/tags/${version}";
-    hash = "sha256-Y//8fXBNdx+ikpvg+S5Bk2rN3UVS5qo2bnbTSVBb8b8=";
+    hash = "sha256-BqsEO1a93a8d7/UH232buSPBt+WSNJbw1DGYA2nm9rs=";
   };
 
   patches = [
+    # Nixpkgs cmake uses NIXPKGS_CMAKE_PREFIX_PATH for the search path
+    ./000-nixpkgs-cmake-prefix-path.patch
+
     # In typical distributions, RPATH is only needed for internal libraries so
     # meson removes everything else. With Nix, the locations of libraries
     # are not as predictable, therefore we need to keep them in the RPATH.
@@ -78,10 +81,16 @@ python3.pkgs.buildPythonApplication rec {
       hash = "sha256-XkwNQ5eg/fVekhsFg/V2/S2LbIVGz3H0wsSFlUT3ZZE=";
     })
 
+    # Fix extraframework lookup on case-sensitive APFS.
+    # https://github.com/mesonbuild/meson/pull/13038
+    ./007-case-sensitive-fs.patch
+
+    # Fix meson's detection for zig's linker
+    # https://github.com/mesonbuild/meson/pull/12293
     (fetchpatch {
-      name = "cross.patch";
-      url = "https://github.com/mesonbuild/meson/pull/13411.patch";
-      hash = "sha256-IHSV0Dfse0lzDtxh/+APc/dzGr/BUbR/WIOqDsm7/8Y=";
+      name = "linker-support-zig-cc.patch";
+      url = "https://github.com/mesonbuild/meson/pull/12293/commits/2baae244c995794d9addfe6ed924dfa72f01be82.patch";
+      hash = "sha256-dDOmSRBKl/gs7I3kmLXIyQk3zsOdlaYov72pPSel4+I=";
     })
   ];
 
