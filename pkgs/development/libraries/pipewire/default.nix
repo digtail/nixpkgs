@@ -5,6 +5,7 @@
 , meson
 , ninja
 , systemd
+, enableSystemd ? true # enableSystemd=false maintained by maintainers.qyliss.
 , pkg-config
 , docutils
 , doxygen
@@ -14,6 +15,7 @@
 , alsa-lib
 , libjack2
 , libusb1
+, udev
 , libsndfile
 , vulkanSupport ? true
 , vulkan-headers
@@ -56,7 +58,7 @@
 
 stdenv.mkDerivation(finalAttrs: {
   pname = "pipewire";
-  version = "1.2.1";
+  version = "1.2.2";
 
   outputs = [
     "out"
@@ -72,7 +74,7 @@ stdenv.mkDerivation(finalAttrs: {
     owner = "pipewire";
     repo = "pipewire";
     rev = finalAttrs.version;
-    sha256 = "sha256-CkxsVD813LbWpuZhJkNLJnqjLF6jmEn+CajXb2XTCsY=";
+    sha256 = "sha256-neLQ41p2f2QyOS3r2VxanaHbiVj6nnnkT7kx/On0azM=";
   };
 
   patches = [
@@ -118,8 +120,7 @@ stdenv.mkDerivation(finalAttrs: {
     ncurses
     readline
     sbc
-    systemd
-  ]
+  ] ++ (if enableSystemd then [ systemd ] else [ udev ])
   ++ (if lib.meta.availableOn stdenv.hostPlatform webrtc-audio-processing_1 then [ webrtc-audio-processing_1 ] else [ webrtc-audio-processing ])
   ++ lib.optional (lib.meta.availableOn stdenv.hostPlatform ldacbt) ldacbt
   ++ lib.optional zeroconfSupport avahi
@@ -145,9 +146,9 @@ stdenv.mkDerivation(finalAttrs: {
     (lib.mesonEnable "avahi" zeroconfSupport)
     (lib.mesonEnable "gstreamer" true)
     (lib.mesonEnable "gstreamer-device-provider" true)
-    (lib.mesonEnable "systemd" true)
-    (lib.mesonEnable "systemd-system-service" true)
-    (lib.mesonEnable "udev" false)
+    (lib.mesonEnable "systemd" enableSystemd)
+    (lib.mesonEnable "systemd-system-service" enableSystemd)
+    (lib.mesonEnable "udev" (!enableSystemd))
     (lib.mesonEnable "ffmpeg" true)
     (lib.mesonEnable "pw-cat-ffmpeg" true)
     (lib.mesonEnable "bluez5" true)
