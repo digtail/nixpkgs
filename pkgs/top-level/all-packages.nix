@@ -18619,8 +18619,9 @@ with pkgs;
 
   nix-build-uncached = callPackage ../development/tools/misc/nix-build-uncached { };
 
-  nexusmods-app-unfree = callPackage ../by-name/ne/nexusmods-app/package.nix {
-    enableUnfree = true;
+  nexusmods-app-unfree = nexusmods-app.override {
+    pname = "nexusmods-app-unfree";
+    _7zz = _7zz-rar;
   };
 
   nmrpflash = callPackage ../development/embedded/nmrpflash { };
@@ -23951,8 +23952,6 @@ with pkgs;
 
   subdl = callPackage ../applications/video/subdl { };
 
-  subtitleedit = callPackage ../applications/video/subtitleedit { };
-
   subtitleeditor = callPackage ../applications/video/subtitleeditor { };
 
   subxt = callPackage ../development/tools/subxt { };
@@ -25538,8 +25537,6 @@ with pkgs;
   mariadb-connector-c_3_2 = callPackage ../servers/sql/mariadb/connector-c/3_2.nix { };
   mariadb-connector-c_3_3 = callPackage ../servers/sql/mariadb/connector-c/3_3.nix { };
 
-  mariadb-galera = callPackage ../servers/sql/mariadb/galera { };
-
   inherit (import ../servers/sql/mariadb pkgs)
     mariadb_105
     mariadb_106
@@ -26694,10 +26691,6 @@ with pkgs;
   linux_6_1_hardened = linuxKernel.kernels.linux_6_1_hardened;
   linuxPackages_6_6_hardened = linuxKernel.packages.linux_6_6_hardened;
   linux_6_6_hardened = linuxKernel.kernels.linux_6_6_hardened;
-  linuxPackages_6_8_hardened = linuxKernel.packages.linux_6_8_hardened;
-  linux_6_8_hardened = linuxKernel.kernels.linux_6_8_hardened;
-  linuxPackages_6_9_hardened = linuxKernel.packages.linux_6_9_hardened;
-  linux_6_9_hardened = linuxKernel.kernels.linux_6_9_hardened;
 
   # GNU Linux-libre kernels
   linuxPackages-libre = linuxKernel.packages.linux_libre;
@@ -27122,7 +27115,11 @@ with pkgs;
   prototool = callPackage ../development/tools/prototool { };
 
   qemu_kvm = lowPrio (qemu.override { hostCpuOnly = true; });
-  qemu_full = lowPrio (qemu.override { smbdSupport = true; cephSupport = true; glusterfsSupport = true; });
+  qemu_full = lowPrio (qemu.override {
+    smbdSupport = lib.meta.availableOn stdenv.hostPlatform samba;
+    cephSupport = lib.meta.availableOn stdenv.hostPlatform ceph;
+    glusterfsSupport = lib.meta.availableOn stdenv.hostPlatform glusterfs && lib.meta.availableOn stdenv.hostPlatform libuuid;
+  });
 
   # See `xenPackages` source for explanations.
   # Building with `xen` instead of `xen-slim` is possible, but makes no sense.
@@ -32314,8 +32311,6 @@ with pkgs;
 
   odin2 = callPackage ../applications/audio/odin2 { };
 
-  okteto = callPackage ../development/tools/okteto { };
-
   onmetal-image = callPackage ../tools/virtualization/onmetal-image { };
 
   opcr-policy = callPackage ../development/tools/opcr-policy { };
@@ -33851,8 +33846,6 @@ with pkgs;
   tasknc = callPackage ../applications/misc/tasknc { };
 
   tasktimer = callPackage ../applications/misc/tasktimer { };
-
-  taskwarrior = callPackage ../applications/misc/taskwarrior { };
 
   taskwarrior-tui = callPackage ../applications/misc/taskwarrior-tui { };
 
