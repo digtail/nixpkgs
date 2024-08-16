@@ -17387,8 +17387,6 @@ with pkgs;
 
   postgres-lsp = callPackage ../development/tools/language-servers/postgres-lsp { };
 
-  pylyzer = callPackage ../development/tools/language-servers/pylyzer { };
-
   ruff-lsp = python3Packages.callPackage ../development/tools/language-servers/ruff-lsp { };
 
   rune-languageserver = callPackage ../development/tools/language-servers/rune-languageserver { };
@@ -34427,8 +34425,6 @@ with pkgs;
   };
 
   vpv = callPackage ../applications/graphics/vpv { };
-
-  vsce = callPackage ../development/tools/vsce { };
 
   vscode = callPackage ../applications/editors/vscode/vscode.nix { };
   vscode-fhs = vscode.fhs;
