@@ -8271,8 +8271,6 @@ with pkgs;
 
   gocryptfs = callPackage ../tools/filesystems/gocryptfs { };
 
-  godot_4 = callPackage ../development/tools/godot/4 { };
-
   godot3 = callPackage ../development/tools/godot/3 { };
 
   godot3-export-templates = callPackage ../development/tools/godot/3/export-templates.nix { };
@@ -17386,8 +17384,6 @@ with pkgs;
   perlnavigator = callPackage ../development/tools/language-servers/perlnavigator { };
 
   postgres-lsp = callPackage ../development/tools/language-servers/postgres-lsp { };
-
-  pylyzer = callPackage ../development/tools/language-servers/pylyzer { };
 
   ruff-lsp = python3Packages.callPackage ../development/tools/language-servers/ruff-lsp { };
 
@@ -34428,8 +34424,6 @@ with pkgs;
 
   vpv = callPackage ../applications/graphics/vpv { };
 
-  vsce = callPackage ../development/tools/vsce { };
-
   vscode = callPackage ../applications/editors/vscode/vscode.nix { };
   vscode-fhs = vscode.fhs;
   vscode-fhsWithPackages = vscode.fhsWithPackages;
@@ -34451,13 +34445,11 @@ with pkgs;
   openvscode-server = callPackage ../servers/openvscode-server {
     nodejs = nodejs_18;
     inherit (darwin.apple_sdk.frameworks) AppKit Cocoa Security;
-    inherit (nodePackages) node-gyp;
   };
 
   code-server = callPackage ../servers/code-server {
     nodejs = nodejs_20;
     inherit (darwin.apple_sdk.frameworks) AppKit Cocoa CoreServices Security;
-    inherit (nodePackages) node-gyp;
   };
 
   vue = callPackage ../applications/misc/vue { };
