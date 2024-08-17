@@ -643,8 +643,6 @@ with pkgs;
 
   firefly-desktop = callPackage ../applications/misc/firefly-desktop { };
 
-  flaca = callPackage ../applications/graphics/flaca { };
-
   frece = callPackage ../development/tools/frece { };
 
   frida-tools = callPackage ../tools/security/frida-tools { };
@@ -7867,8 +7865,6 @@ with pkgs;
   flawfinder = callPackage ../development/tools/flawfinder { };
 
   flintlock = callPackage ../applications/virtualization/flintlock { };
-
-  flip-link = callPackage ../development/tools/flip-link { };
 
   flips = callPackage ../tools/compression/flips { };
 
