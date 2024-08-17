@@ -17385,8 +17385,6 @@ with pkgs;
 
   postgres-lsp = callPackage ../development/tools/language-servers/postgres-lsp { };
 
-  ruff-lsp = python3Packages.callPackage ../development/tools/language-servers/ruff-lsp { };
-
   rune-languageserver = callPackage ../development/tools/language-servers/rune-languageserver { };
 
   svls = callPackage ../development/tools/language-servers/svls { };
@@ -39472,8 +39470,6 @@ with pkgs;
   xteddy = callPackage ../applications/misc/xteddy { };
 
   xva-img = callPackage ../tools/virtualization/xva-img { };
-
-  xwiimote = callPackage ../misc/drivers/xwiimote { };
 
   xzoom = callPackage ../tools/X11/xzoom { };
 
