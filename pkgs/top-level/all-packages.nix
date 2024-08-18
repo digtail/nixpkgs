@@ -13189,14 +13189,14 @@ with pkgs;
 
   thelounge = callPackage ../applications/networking/irc/thelounge { };
 
-  theLoungePlugins = with lib; let
-    pkgs = filterAttrs (name: _: hasPrefix "thelounge-" name) nodePackages;
-    getPackagesWithPrefix = prefix: mapAttrs' (name: pkg: nameValuePair (removePrefix ("thelounge-" + prefix + "-") name) pkg)
-      (filterAttrs (name: _: hasPrefix ("thelounge-" + prefix + "-") name) pkgs);
+  theLoungePlugins = let
+    pkgs = lib.filterAttrs (name: _: lib.hasPrefix "thelounge-" name) nodePackages;
+    getPackagesWithPrefix = prefix: lib.mapAttrs' (name: pkg: lib.nameValuePair (lib.removePrefix ("thelounge-" + prefix + "-") name) pkg)
+      (lib.filterAttrs (name: _: lib.hasPrefix ("thelounge-" + prefix + "-") name) pkgs);
   in
-  recurseIntoAttrs {
-    plugins = recurseIntoAttrs (getPackagesWithPrefix "plugin");
-    themes = recurseIntoAttrs (getPackagesWithPrefix "theme");
+  lib.recurseIntoAttrs {
+    plugins = lib.recurseIntoAttrs (getPackagesWithPrefix "plugin");
+    themes = lib.recurseIntoAttrs (getPackagesWithPrefix "theme");
   };
 
   theme-sh = callPackage ../tools/misc/theme-sh { };
@@ -14332,8 +14332,6 @@ with pkgs;
   xdxf2slob = callPackage ../tools/misc/xdxf2slob { };
 
   xe-guest-utilities = callPackage ../tools/virtualization/xe-guest-utilities { };
-
-  xen-guest-agent = callPackage ../tools/virtualization/xen-guest-agent { };
 
   xflux = callPackage ../tools/misc/xflux { };
   xflux-gui = python3Packages.callPackage ../tools/misc/xflux/gui.nix { };
@@ -18026,8 +18024,6 @@ with pkgs;
   dura = callPackage ../development/tools/misc/dura {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
-
-  dwfv = callPackage ../applications/science/electronics/dwfv { };
 
   dwz = callPackage ../development/tools/misc/dwz { };
 
@@ -35771,6 +35767,8 @@ with pkgs;
   flock = callPackage ../development/tools/flock { };
 
   forge-mtg = callPackage ../games/forge-mtg { };
+
+  freecad-wayland = freecad.override { withWayland = true; };
 
   freeciv = callPackage ../games/freeciv {
     sdl2Client = false;
