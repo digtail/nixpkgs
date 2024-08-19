@@ -3499,8 +3499,6 @@ with pkgs;
 
   fedora-backgrounds = callPackage ../data/misc/fedora-backgrounds { };
 
-  ccextractor = callPackage ../applications/video/ccextractor { };
-
   cconv = callPackage ../tools/text/cconv { };
 
   go-check = callPackage ../development/tools/check { };
@@ -19595,6 +19593,7 @@ with pkgs;
     boost183
     boost184
     boost185
+    boost186
   ;
 
   boost = boost181;
