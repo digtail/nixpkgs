@@ -19424,8 +19424,6 @@ with pkgs;
   allegro4 = callPackage ../development/libraries/allegro { };
   allegro5 = callPackage ../development/libraries/allegro/5.nix { };
 
-  amdvlk = callPackage ../development/libraries/amdvlk { };
-
   amf-headers = callPackage ../development/libraries/amf-headers { };
 
   aml = callPackage ../development/libraries/aml { };
@@ -20878,6 +20876,7 @@ with pkgs;
     icu72
     icu73
     icu74
+    icu75
   ;
 
   icu = icu74;
