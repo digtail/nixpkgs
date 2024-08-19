@@ -14436,6 +14436,12 @@
     githubId = 2287221;
     name = "Andreas Zweili";
   };
+  nebunebu = {
+    email = "neb.nebuchadnezzar@gmail.com";
+    github = "nebunebu";
+    githubId = 87451010;
+    name = "nebu";
+  };
   Necior = {
     email = "adrian@sadlocha.eu";
     github = "Necior";
