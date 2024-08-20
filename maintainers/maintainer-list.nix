@@ -5640,7 +5640,7 @@
     matrix = "@e1mo:chaos.jetzt";
     github = "e1mo";
     githubId = 61651268;
-    name = "Moritz Fromm";
+    name = "Nina Fromm";
     keys = [ { fingerprint = "67BE E563 43B6 420D 550E  DF2A 6D61 7FD0 A85B AADA"; } ];
   };
   eadwu = {
@@ -7676,6 +7676,12 @@
     github = "goodrone";
     githubId = 1621335;
     name = "Andrew Trachenko";
+  };
+  gordon-bp = {
+    email = "gordy@hanakano.com";
+    github = "Gordon-BP";
+    githubId = 77560236;
+    name = "Gordon Clark";
   };
   gotcha = {
     email = "gotcha@bubblenet.be";
