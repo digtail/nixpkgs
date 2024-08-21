@@ -18608,6 +18608,12 @@
     githubId = 17243347;
     name = "Sebastian Sellmeier";
   };
+  sedlund = {
+    email = "scott+nixpkgs@teraton.com";
+    github = "sedlund";
+    githubId = 8109138;
+    name = "Scott Edlund";
+  };
   sefidel = {
     name = "sefidel";
     email = "contact@sefidel.net";
