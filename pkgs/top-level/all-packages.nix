@@ -2669,8 +2669,6 @@ with pkgs;
 
   pcem = callPackage ../applications/emulators/pcem { };
 
-  pcsxr = callPackage ../applications/emulators/pcsxr { };
-
   ppsspp-sdl = let
     argset = {
       ffmpeg = ffmpeg_4;
@@ -18849,11 +18847,6 @@ with pkgs;
   rsonpath = callPackage ../development/tools/misc/rsonpath { };
 
   rufo = callPackage ../development/tools/rufo { };
-
-  rye = darwin.apple_sdk_11_0.callPackage ../development/tools/rye {
-    inherit (darwin.apple_sdk_11_0) Libsystem;
-    inherit (darwin.apple_sdk_11_0.frameworks) CoreServices SystemConfiguration;
-  };
 
   samurai = callPackage ../development/tools/build-managers/samurai { };
 
@@ -35341,7 +35334,7 @@ with pkgs;
 
   heroic-unwrapped = callPackage ../games/heroic {
     # Match the version used by the upstream package.
-    electron = electron_29;
+    electron = electron_31;
   };
 
   heroic = callPackage ../games/heroic/fhsenv.nix { };
@@ -37668,8 +37661,6 @@ with pkgs;
   boolector = callPackage ../applications/science/logic/boolector { };
 
   bitwuzla = callPackage ../applications/science/logic/bitwuzla { };
-
-  symbiyosys = callPackage ../applications/science/logic/symbiyosys { };
 
   symfpu = callPackage ../applications/science/logic/symfpu { };
 
