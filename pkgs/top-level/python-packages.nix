@@ -3309,8 +3309,6 @@ self: super: with self; {
 
   django-crispy-forms = callPackage ../development/python-modules/django-crispy-forms { };
 
-  django-crontab = callPackage ../development/python-modules/django-crontab { };
-
   django-cryptography = callPackage ../development/python-modules/django-cryptography { };
 
   django-csp = callPackage ../development/python-modules/django-csp { };
@@ -9137,6 +9135,8 @@ self: super: with self; {
   nextcord = callPackage ../development/python-modules/nextcord { };
 
   nextdns = callPackage ../development/python-modules/nextdns { };
+
+  nexusformat = callPackage ../development/python-modules/nexusformat { };
 
   nfcpy = callPackage ../development/python-modules/nfcpy { };
 
