@@ -2461,8 +2461,6 @@ with pkgs;
 
   lab = callPackage ../applications/version-management/lab { };
 
-  labctl = callPackage ../tools/networking/labctl { };
-
   legit = callPackage ../applications/version-management/legit { };
 
   legit-web = callPackage ../applications/version-management/legit-web { };
@@ -2672,8 +2670,6 @@ with pkgs;
   packwiz = callPackage ../tools/games/minecraft/packwiz { };
 
   pcem = callPackage ../applications/emulators/pcem { };
-
-  pcsxr = callPackage ../applications/emulators/pcsxr { };
 
   ppsspp-sdl = let
     argset = {
@@ -3501,8 +3497,6 @@ with pkgs;
 
   fedora-backgrounds = callPackage ../data/misc/fedora-backgrounds { };
 
-  ccextractor = callPackage ../applications/video/ccextractor { };
-
   cconv = callPackage ../tools/text/cconv { };
 
   go-check = callPackage ../development/tools/check { };
@@ -3578,11 +3572,6 @@ with pkgs;
   delayarchitect = callPackage ../applications/audio/delayarchitect { };
 
   dell-command-configure = callPackage ../tools/system/dell-command-configure { };
-
-  deltachat-desktop = callPackage ../applications/networking/instant-messengers/deltachat-desktop {
-    electron = electron_30;
-    inherit (darwin.apple_sdk.frameworks) CoreServices;
-  };
 
   deskew = callPackage ../applications/graphics/deskew { };
 
@@ -4959,7 +4948,7 @@ with pkgs;
 
   element-desktop = callPackage ../applications/networking/instant-messengers/element/element-desktop.nix {
     inherit (darwin.apple_sdk.frameworks) Security AppKit CoreServices;
-    electron = electron_30;
+    electron = electron_31;
   };
   element-desktop-wayland = writeScriptBin "element-desktop" ''
     #!/bin/sh
@@ -6889,8 +6878,6 @@ with pkgs;
 
   convfont = callPackage ../tools/misc/convfont { };
 
-  convmv = callPackage ../tools/misc/convmv { };
-
   cpcfs = callPackage ../tools/filesystems/cpcfs { };
 
   coreutils =  callPackage ../tools/misc/coreutils { };
@@ -8815,8 +8802,6 @@ with pkgs;
 
   humanfriendly = with python3Packages; toPythonApplication humanfriendly;
 
-  hwinfo = callPackage ../tools/system/hwinfo { };
-
   hw-probe = perlPackages.callPackage ../tools/system/hw-probe { };
 
   hybridreverb2 = callPackage ../applications/audio/hybridreverb2 { };
@@ -10151,10 +10136,6 @@ with pkgs;
 
   lsb-release = callPackage ../os-specific/linux/lsb-release { };
 
-  # lsh installs `bin/nettle-lfib-stream' and so does Nettle.  Give the
-  # former a lower priority than Nettle.
-  lsh = lowPrio (callPackage ../tools/networking/lsh { });
-
   lunatic = callPackage ../development/interpreters/lunatic { };
 
   lux = callPackage ../tools/video/lux { };
@@ -10251,8 +10232,6 @@ with pkgs;
   marktext = callPackage ../applications/misc/marktext { };
 
   mars-mips = callPackage ../development/tools/mars-mips { };
-
-  maui-shell = libsForQt5.callPackage ../applications/window-managers/maui-shell { };
 
   mawk = callPackage ../tools/text/mawk { };
 
@@ -10417,7 +10396,7 @@ with pkgs;
   mole = callPackage ../tools/networking/mole { };
 
   morgen = callPackage ../applications/office/morgen {
-    electron = electron_29;
+    electron = electron_30;
   };
 
   mosh = callPackage ../tools/networking/mosh { };
@@ -11236,8 +11215,6 @@ with pkgs;
   payload_dumper = callPackage ../tools/archivers/payload_dumper { };
 
   payload-dumper-go = callPackage ../tools/archivers/payload-dumper-go { };
-
-  p2pvc = callPackage ../applications/video/p2pvc { };
 
   p3x-onenote = callPackage ../applications/office/p3x-onenote { };
 
@@ -13191,14 +13168,14 @@ with pkgs;
 
   thelounge = callPackage ../applications/networking/irc/thelounge { };
 
-  theLoungePlugins = with lib; let
-    pkgs = filterAttrs (name: _: hasPrefix "thelounge-" name) nodePackages;
-    getPackagesWithPrefix = prefix: mapAttrs' (name: pkg: nameValuePair (removePrefix ("thelounge-" + prefix + "-") name) pkg)
-      (filterAttrs (name: _: hasPrefix ("thelounge-" + prefix + "-") name) pkgs);
+  theLoungePlugins = let
+    pkgs = lib.filterAttrs (name: _: lib.hasPrefix "thelounge-" name) nodePackages;
+    getPackagesWithPrefix = prefix: lib.mapAttrs' (name: pkg: lib.nameValuePair (lib.removePrefix ("thelounge-" + prefix + "-") name) pkg)
+      (lib.filterAttrs (name: _: lib.hasPrefix ("thelounge-" + prefix + "-") name) pkgs);
   in
-  recurseIntoAttrs {
-    plugins = recurseIntoAttrs (getPackagesWithPrefix "plugin");
-    themes = recurseIntoAttrs (getPackagesWithPrefix "theme");
+  lib.recurseIntoAttrs {
+    plugins = lib.recurseIntoAttrs (getPackagesWithPrefix "plugin");
+    themes = lib.recurseIntoAttrs (getPackagesWithPrefix "theme");
   };
 
   theme-sh = callPackage ../tools/misc/theme-sh { };
@@ -16771,8 +16748,6 @@ with pkgs;
 
   me_cleaner = callPackage ../tools/misc/me_cleaner { };
 
-  mesos-dns = callPackage ../servers/mesos-dns { };
-
   metamath = callPackage ../development/interpreters/metamath { };
 
   minder = callPackage ../applications/misc/minder { };
@@ -17462,7 +17437,8 @@ with pkgs;
     electron_27-bin
     electron_28-bin
     electron_29-bin
-    electron_30-bin;
+    electron_30-bin
+    electron_31-bin;
 
   inherit (callPackages ../development/tools/electron/chromedriver { })
     electron-chromedriver_29
@@ -17474,9 +17450,10 @@ with pkgs;
   electron_28 = electron_28-bin;
   electron_29 = if lib.meta.availableOn stdenv.hostPlatform electron-source.electron_29 then electron-source.electron_29 else electron_29-bin;
   electron_30 = if lib.meta.availableOn stdenv.hostPlatform electron-source.electron_30 then electron-source.electron_30 else electron_30-bin;
-  electron = electron_30;
-  electron-bin = electron_30-bin;
-  electron-chromedriver = electron-chromedriver_30;
+  electron_31 = if lib.meta.availableOn stdenv.hostPlatform electron-source.electron_31 then electron-source.electron_31 else electron_31-bin;
+  electron = electron_31;
+  electron-bin = electron_31-bin;
+  electron-chromedriver = electron-chromedriver_31;
 
   autobuild = callPackage ../development/tools/misc/autobuild { };
 
@@ -18026,8 +18003,6 @@ with pkgs;
   dura = callPackage ../development/tools/misc/dura {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
-
-  dwfv = callPackage ../applications/science/electronics/dwfv { };
 
   dwz = callPackage ../development/tools/misc/dwz { };
 
@@ -18867,11 +18842,6 @@ with pkgs;
 
   rufo = callPackage ../development/tools/rufo { };
 
-  rye = darwin.apple_sdk_11_0.callPackage ../development/tools/rye {
-    inherit (darwin.apple_sdk_11_0) Libsystem;
-    inherit (darwin.apple_sdk_11_0.frameworks) CoreServices SystemConfiguration;
-  };
-
   samurai = callPackage ../development/tools/build-managers/samurai { };
 
   muon = callPackage ../development/tools/build-managers/muon { };
@@ -19430,8 +19400,6 @@ with pkgs;
   allegro4 = callPackage ../development/libraries/allegro { };
   allegro5 = callPackage ../development/libraries/allegro/5.nix { };
 
-  amdvlk = callPackage ../development/libraries/amdvlk { };
-
   amf-headers = callPackage ../development/libraries/amf-headers { };
 
   aml = callPackage ../development/libraries/aml { };
@@ -19603,6 +19571,7 @@ with pkgs;
     boost183
     boost184
     boost185
+    boost186
   ;
 
   boost = boost181;
@@ -20884,6 +20853,7 @@ with pkgs;
     icu72
     icu73
     icu74
+    icu75
   ;
 
   icu = icu74;
@@ -21397,10 +21367,6 @@ with pkgs;
   libde265 = callPackage ../development/libraries/libde265 { };
 
   libdeflate = darwin.apple_sdk_11_0.callPackage ../development/libraries/libdeflate { };
-
-  libdeltachat = callPackage ../development/libraries/libdeltachat {
-    inherit (darwin.apple_sdk.frameworks) CoreFoundation Security SystemConfiguration;
-  };
 
   libdevil = callPackage ../development/libraries/libdevil {
     inherit (darwin.apple_sdk.frameworks) OpenGL;
@@ -22087,8 +22053,6 @@ with pkgs;
   liboil = callPackage ../development/libraries/liboil { };
 
   libomxil-bellagio = callPackage ../development/libraries/libomxil-bellagio { };
-
-  liboop = callPackage ../development/libraries/liboop { };
 
   libopenaptx = callPackage ../development/libraries/libopenaptx { };
 
@@ -23045,19 +23009,6 @@ with pkgs;
 
   openct = callPackage ../development/libraries/openct { };
 
-  opencv2 = callPackage ../development/libraries/opencv {
-    inherit (darwin.apple_sdk.frameworks) AVFoundation Cocoa QTKit Accelerate;
-    ffmpeg = ffmpeg_4;
-  };
-
-  opencv3 = callPackage ../development/libraries/opencv/3.x.nix {
-    inherit (darwin.apple_sdk.frameworks)
-      AVFoundation Cocoa VideoDecodeAcceleration CoreMedia MediaToolbox Accelerate;
-    ffmpeg = ffmpeg_4;
-    # OpenCV3 won't build with anything newer than CUDA 11 due to API changes.
-    cudaPackages = cudaPackages_11;
-  };
-
   opencv4 = callPackage ../development/libraries/opencv/4.x.nix {
     inherit (darwin.apple_sdk.frameworks)
       AVFoundation Cocoa VideoDecodeAcceleration CoreMedia MediaToolbox Accelerate;
@@ -23219,6 +23170,8 @@ with pkgs;
     physfs;
 
   pico-sdk = callPackage ../development/libraries/pico-sdk { };
+
+  pingvin-share =  callPackage ../servers/pingvin-share { };
 
   pinocchio = callPackage ../development/libraries/pinocchio { };
 
@@ -31538,10 +31491,6 @@ with pkgs;
 
   lame = callPackage ../development/libraries/lame { };
 
-  labwc = callPackage ../by-name/la/labwc/package.nix {
-    wlroots = wlroots_0_17;
-  };
-
   larswm = callPackage ../applications/window-managers/larswm { };
 
   lash = callPackage ../applications/audio/lash { };
@@ -34526,7 +34475,7 @@ with pkgs;
 
   webcord = callPackage ../by-name/we/webcord/package.nix { electron = electron_30; };
 
-  webcord-vencord = callPackage ../by-name/we/webcord-vencord/package.nix { electron = electron_29; };
+  webcord-vencord = callPackage ../by-name/we/webcord-vencord/package.nix { electron = electron_30; };
 
   webex = callPackage ../applications/networking/instant-messengers/webex { };
 
@@ -34759,8 +34708,8 @@ with pkgs;
 
   xenPackages = recurseIntoAttrs (callPackage ../applications/virtualization/xen/packages.nix {});
 
-  xen = xenPackages.xen;
-  xen-slim = xenPackages.xen-slim;
+  xen = xenPackages.xen_4_19;
+  xen-slim = xenPackages.xen_4_19-slim;
 
   xkbset = callPackage ../tools/X11/xkbset { };
 
@@ -35360,7 +35309,7 @@ with pkgs;
 
   heroic-unwrapped = callPackage ../games/heroic {
     # Match the version used by the upstream package.
-    electron = electron_29;
+    electron = electron_31;
   };
 
   heroic = callPackage ../games/heroic/fhsenv.nix { };
@@ -35767,6 +35716,8 @@ with pkgs;
   flock = callPackage ../development/tools/flock { };
 
   forge-mtg = callPackage ../games/forge-mtg { };
+
+  freecad-wayland = freecad.override { withWayland = true; };
 
   freeciv = callPackage ../games/freeciv {
     sdl2Client = false;
@@ -37238,18 +37189,6 @@ with pkgs;
     cudaSupport = true;
   };
 
-  mathematica9 = callPackage ../applications/science/math/mathematica {
-    version = "9";
-  };
-
-  mathematica10 = callPackage ../applications/science/math/mathematica {
-    version = "10";
-  };
-
-  mathematica11 = callPackage ../applications/science/math/mathematica {
-    version = "11";
-  };
-
   mathmod = libsForQt5.callPackage ../applications/science/math/mathmod { };
 
   metis = callPackage ../development/libraries/science/math/metis { };
@@ -37284,8 +37223,6 @@ with pkgs;
   p4est-dbg = callPackage ../development/libraries/science/math/p4est {
     p4est-sc = p4est-sc-dbg;
   };
-
-  parmetis = callPackage ../development/libraries/science/math/parmetis { };
 
   QuadProgpp = callPackage ../development/libraries/science/math/QuadProgpp { };
 
@@ -37685,8 +37622,6 @@ with pkgs;
   boolector = callPackage ../applications/science/logic/boolector { };
 
   bitwuzla = callPackage ../applications/science/logic/bitwuzla { };
-
-  symbiyosys = callPackage ../applications/science/logic/symbiyosys { };
 
   symfpu = callPackage ../applications/science/logic/symfpu { };
 
@@ -38731,8 +38666,6 @@ with pkgs;
   nix-serve = callPackage ../tools/package-management/nix-serve { };
 
   nix-serve-ng = haskell.lib.compose.justStaticExecutables haskellPackages.nix-serve-ng;
-
-  nix-simple-deploy = callPackage ../tools/package-management/nix-simple-deploy { };
 
   nix-visualize = python3.pkgs.callPackage ../tools/package-management/nix-visualize { };
 
