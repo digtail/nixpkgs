@@ -6897,7 +6897,7 @@ with pkgs;
 
   cromfs = callPackage ../tools/archivers/cromfs { };
 
-  cron = callPackage ../tools/system/cron { };
+  cron = isc-cron;
 
   ctlptl = callPackage ../development/tools/ctlptl { };
 
@@ -17171,8 +17171,6 @@ with pkgs;
   };
 
   guile-sdl2 = callPackage ../development/guile-modules/guile-sdl2 { };
-
-  guile-sqlite3 = callPackage ../development/guile-modules/guile-sqlite3 { };
 
   guile-ssh = callPackage ../development/guile-modules/guile-ssh { };
 
