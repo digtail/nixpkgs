@@ -2671,7 +2671,6 @@ with pkgs;
 
   ppsspp-sdl = let
     argset = {
-      ffmpeg = ffmpeg_4;
       enableQt = false;
       enableVulkan = true;
       forceWayland = false;
@@ -2681,7 +2680,6 @@ with pkgs;
 
   ppsspp-sdl-wayland = let
     argset = {
-      ffmpeg = ffmpeg_4;
       enableQt = false;
       enableVulkan = false; # https://github.com/hrydgard/ppsspp/issues/13845
       forceWayland = true;
@@ -2691,7 +2689,6 @@ with pkgs;
 
   ppsspp-qt = let
     argset = {
-      ffmpeg = ffmpeg_4;
       enableQt = true;
       enableVulkan = false; # https://github.com/hrydgard/ppsspp/issues/11628
       forceWayland = false;
@@ -32406,7 +32403,6 @@ with pkgs;
     enableX11 = false;
     enableGL = false;
   };
-  mupdf_1_17 = callPackage ../applications/misc/mupdf/1.17 { };
 
   muso = callPackage ../applications/audio/muso {
     inherit (darwin.apple_sdk.frameworks) CoreServices;
@@ -39364,8 +39360,6 @@ with pkgs;
   xpipe = callPackage ../applications/networking/xpipe { };
 
   xsane = callPackage ../applications/graphics/sane/xsane.nix { };
-
-  xsser = python3Packages.callPackage ../tools/security/xsser { };
 
   xsw = callPackage ../applications/misc/xsw {
     # Enable the next line to use this in terminal.
