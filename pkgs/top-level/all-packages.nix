@@ -34713,9 +34713,7 @@ with pkgs;
     inherit (gnome2) libglade GConf;
   };
 
-  xiphos = callPackage ../applications/misc/xiphos {
-    gtkhtml = gnome.gtkhtml;
-  };
+  xiphos = callPackage ../applications/misc/xiphos { };
 
   xournal = callPackage ../applications/graphics/xournal {
     inherit (gnome2) libgnomecanvas;
@@ -36605,8 +36603,6 @@ with pkgs;
     gnome45Extensions
     gnome46Extensions
   ;
-
-  gnome-connections = callPackage ../desktops/gnome/apps/gnome-connections { };
 
   gnome-extensions-cli = python3Packages.callPackage ../desktops/gnome/misc/gnome-extensions-cli { };
 
