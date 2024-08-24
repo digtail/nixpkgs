@@ -6423,8 +6423,6 @@ with pkgs;
 
   nrg2iso = callPackage ../tools/cd-dvd/nrg2iso { };
 
-  ceph-csi = callPackage ../tools/filesystems/ceph-csi { };
-
   libceph = ceph.lib;
   inherit (callPackages ../tools/filesystems/ceph {
     lua = lua5_4; # Ceph currently requires >= 5.3
@@ -6899,7 +6897,7 @@ with pkgs;
 
   cromfs = callPackage ../tools/archivers/cromfs { };
 
-  cron = callPackage ../tools/system/cron { };
+  cron = isc-cron;
 
   ctlptl = callPackage ../development/tools/ctlptl { };
 
@@ -9477,8 +9475,6 @@ with pkgs;
   loudgain = callPackage ../tools/audio/loudgain/default.nix { };
 
   lpcnetfreedv = callPackage ../development/libraries/lpcnetfreedv { };
-
-  lsd = callPackage ../tools/misc/lsd { };
 
   lsdvd = callPackage ../tools/cd-dvd/lsdvd { };
 
@@ -17173,8 +17169,6 @@ with pkgs;
   };
 
   guile-sdl2 = callPackage ../development/guile-modules/guile-sdl2 { };
-
-  guile-sqlite3 = callPackage ../development/guile-modules/guile-sqlite3 { };
 
   guile-ssh = callPackage ../development/guile-modules/guile-ssh { };
 
@@ -34719,9 +34713,7 @@ with pkgs;
     inherit (gnome2) libglade GConf;
   };
 
-  xiphos = callPackage ../applications/misc/xiphos {
-    gtkhtml = gnome.gtkhtml;
-  };
+  xiphos = callPackage ../applications/misc/xiphos { };
 
   xournal = callPackage ../applications/graphics/xournal {
     inherit (gnome2) libgnomecanvas;
@@ -35785,10 +35777,6 @@ with pkgs;
 
   qtads = qt5.callPackage ../games/qtads { };
 
-  grapejuice = callPackage ../games/grapejuice {
-    wine = wineWowPackages.unstable;
-  };
-
   graphwar = callPackage ../games/graphwar { };
 
   gtypist = callPackage ../games/gtypist { };
@@ -36615,8 +36603,6 @@ with pkgs;
     gnome45Extensions
     gnome46Extensions
   ;
-
-  gnome-connections = callPackage ../desktops/gnome/apps/gnome-connections { };
 
   gnome-extensions-cli = python3Packages.callPackage ../desktops/gnome/misc/gnome-extensions-cli { };
 
