@@ -10211,8 +10211,6 @@ with pkgs;
 
   mars-mips = callPackage ../development/tools/mars-mips { };
 
-  mawk = callPackage ../tools/text/mawk { };
-
   mb2md = callPackage ../tools/text/mb2md { };
 
   mbuffer = callPackage ../tools/misc/mbuffer { };
@@ -11110,7 +11108,6 @@ with pkgs;
   opentelemetry-collector = callPackage ../tools/misc/opentelemetry-collector { };
   opentelemetry-collector-contrib = callPackage ../tools/misc/opentelemetry-collector/contrib.nix { };
 
-  openvswitch-lts = callPackage ../by-name/op/openvswitch/lts.nix { };
   openvswitch-dpdk = callPackage ../by-name/op/openvswitch/package.nix { withDPDK = true; };
 
   optifinePackages = callPackage ../tools/games/minecraft/optifine { };
@@ -22730,8 +22727,6 @@ with pkgs;
   moserial = callPackage ../tools/misc/moserial { };
 
   mosquitto = callPackage ../servers/mqtt/mosquitto { };
-
-  nanomq = callPackage ../servers/mqtt/nanomq { };
 
   mps = callPackage ../development/libraries/mps { };
 
@@ -34845,8 +34840,6 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security AppKit;
   };
 
-  youki = callPackage ../applications/virtualization/youki { };
-
   yt-dlp-light = yt-dlp.override {
     atomicparsleySupport = false;
     ffmpegSupport = false;
@@ -38109,10 +38102,6 @@ with pkgs;
   dbus-map = callPackage ../tools/misc/dbus-map { };
 
   dell-530cdn = callPackage ../misc/drivers/dell-530cdn { };
-
-  deploy-rs = callPackage ../tools/package-management/deploy-rs {
-    inherit (darwin.apple_sdk.frameworks) CoreServices SystemConfiguration;
-  };
 
   dockutil = callPackage ../os-specific/darwin/dockutil { };
 
