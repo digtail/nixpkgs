@@ -10211,8 +10211,6 @@ with pkgs;
 
   mars-mips = callPackage ../development/tools/mars-mips { };
 
-  mawk = callPackage ../tools/text/mawk { };
-
   mb2md = callPackage ../tools/text/mb2md { };
 
   mbuffer = callPackage ../tools/misc/mbuffer { };
@@ -34843,8 +34841,6 @@ with pkgs;
   youtube-tui = callPackage ../applications/video/youtube-tui {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security AppKit;
   };
-
-  youki = callPackage ../applications/virtualization/youki { };
 
   yt-dlp-light = yt-dlp.override {
     atomicparsleySupport = false;
