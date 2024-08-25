@@ -13079,8 +13079,6 @@ with pkgs;
 
   teavpn2 = callPackage ../tools/networking/teavpn2 { };
 
-  inherit (nodePackages) teck-programmer;
-
   ted = callPackage ../tools/typesetting/ted { };
 
   teamviewer = libsForQt5.callPackage ../applications/networking/remote/teamviewer { };
@@ -13939,11 +13937,6 @@ with pkgs;
   tftp-hpa = callPackage ../tools/networking/tftp-hpa { };
 
   tigervnc = callPackage ../tools/admin/tigervnc { };
-
-  tightvnc = callPackage ../tools/admin/tightvnc {
-    fontDirectories = [ xorg.fontadobe75dpi xorg.fontmiscmisc xorg.fontcursormisc
-      xorg.fontbhlucidatypewriter75dpi ];
-  };
 
   time = callPackage ../tools/misc/time { };
 
@@ -27239,8 +27232,6 @@ with pkgs;
   # FIXME: `tcp-wrapper' is actually not OS-specific.
   tcp_wrappers = callPackage ../os-specific/linux/tcp-wrappers { };
 
-  teck-udev-rules = callPackage ../os-specific/linux/teck-udev-rules { };
-
   tiptop = callPackage ../os-specific/linux/tiptop { };
 
   tpacpi-bat = callPackage ../os-specific/linux/tpacpi-bat { };
@@ -28440,8 +28431,6 @@ with pkgs;
   roboto-slab = callPackage ../data/fonts/roboto-slab { };
 
   hasklig = callPackage ../data/fonts/hasklig { };
-
-  maligned = callPackage ../development/tools/maligned { };
 
   inter = callPackage ../data/fonts/inter { };
 
