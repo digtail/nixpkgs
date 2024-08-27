@@ -4420,8 +4420,6 @@ with pkgs;
 
   cht-sh = callPackage ../tools/misc/cht.sh { };
 
-  cinny-desktop = callPackage ../applications/networking/instant-messengers/cinny-desktop { };
-
   ckbcomp = callPackage ../tools/X11/ckbcomp { };
 
   clac = callPackage ../tools/misc/clac { };
@@ -24273,10 +24271,6 @@ with pkgs;
 
   yubico-pam = callPackage ../development/libraries/yubico-pam {
     inherit (darwin.apple_sdk.frameworks) CoreServices SystemConfiguration;
-  };
-
-  yubico-piv-tool = callPackage ../tools/misc/yubico-piv-tool {
-    inherit (darwin.apple_sdk.frameworks) PCSC;
   };
 
   yubihsm-connector = callPackage ../tools/security/yubihsm-connector { };
