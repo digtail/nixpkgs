@@ -10658,8 +10658,6 @@ with pkgs;
 
   nb = callPackage ../tools/misc/nb { };
 
-  nbqa = callPackage ../tools/misc/nbqa { };
-
   kb = callPackage ../tools/misc/kb { };
 
   notable = callPackage ../applications/misc/notable { };
