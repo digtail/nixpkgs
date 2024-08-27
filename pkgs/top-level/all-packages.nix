@@ -13685,8 +13685,6 @@ with pkgs;
     pythonPackages = python3Packages;
   };
 
-  video-trimmer = callPackage ../applications/video/video-trimmer { };
-
   via = callPackage ../tools/misc/via { };
 
   vial = callPackage ../tools/misc/vial { };
@@ -18721,10 +18719,6 @@ with pkgs;
   } // (config.radare or {}));
 
   ran = callPackage ../servers/http/ran { };
-
-  rathole = callPackage ../tools/networking/rathole {
-    inherit (darwin.apple_sdk.frameworks) CoreServices;
-  };
 
   retry = callPackage ../tools/system/retry { };
 
@@ -33335,8 +33329,6 @@ with pkgs;
   sway-launcher-desktop = callPackage ../applications/misc/sway-launcher-desktop { };
 
   tart = callPackage ../applications/virtualization/tart { };
-
-  viber = callPackage ../applications/networking/instant-messengers/viber { };
 
   wavebox = callPackage ../applications/networking/instant-messengers/wavebox { };
 
