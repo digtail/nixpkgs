@@ -3367,8 +3367,6 @@ with pkgs;
     httpServer = true;
   };
 
-  antennas = callPackage ../servers/antennas { };
-
   apg = callPackage ../tools/security/apg { };
 
   apt-dater = callPackage ../tools/package-management/apt-dater {
@@ -4421,8 +4419,6 @@ with pkgs;
   chisel = callPackage ../tools/networking/chisel { };
 
   cht-sh = callPackage ../tools/misc/cht.sh { };
-
-  cinny-desktop = callPackage ../applications/networking/instant-messengers/cinny-desktop { };
 
   ckbcomp = callPackage ../tools/X11/ckbcomp { };
 
@@ -6322,8 +6318,6 @@ with pkgs;
   btar = callPackage ../tools/backup/btar { };
 
   bumpver = callPackage ../applications/version-management/bumpver { };
-
-  bup = callPackage ../tools/backup/bup { };
 
   bupstash = darwin.apple_sdk_11_0.callPackage ../tools/backup/bupstash { };
 
@@ -21768,8 +21762,6 @@ with pkgs;
     python = python3;
   };
 
-  libresample = callPackage ../development/libraries/libresample { };
-
   librevenge = callPackage ../development/libraries/librevenge { };
 
   librime = callPackage ../development/libraries/librime { };
@@ -23356,7 +23348,6 @@ with pkgs;
 
   rtrlib = callPackage ../development/libraries/rtrlib { };
 
-  kissfft = callPackage ../development/libraries/kissfft { };
   kissfftFloat = kissfft.override {
     datatype = "float";
   };
@@ -24278,10 +24269,6 @@ with pkgs;
 
   yubico-pam = callPackage ../development/libraries/yubico-pam {
     inherit (darwin.apple_sdk.frameworks) CoreServices SystemConfiguration;
-  };
-
-  yubico-piv-tool = callPackage ../tools/misc/yubico-piv-tool {
-    inherit (darwin.apple_sdk.frameworks) PCSC;
   };
 
   yubihsm-connector = callPackage ../tools/security/yubihsm-connector { };
@@ -38371,8 +38358,6 @@ with pkgs;
 
   museeks = callPackage ../applications/audio/museeks { };
 
-  musly = callPackage ../applications/audio/musly { };
-
   mynewt-newt = callPackage ../tools/package-management/mynewt-newt { };
 
   mynewt-newtmgr = callPackage ../tools/misc/mynewt-newtmgr { };
@@ -39038,8 +39023,6 @@ with pkgs;
   tunnelx = callPackage ../applications/gis/tunnelx { };
 
   tvbrowser = callPackage ../applications/misc/tvbrowser { };
-
-  tvheadend = callPackage ../servers/tvheadend { };
 
   twitch-cli = callPackage ../development/tools/twitch-cli { };
 
