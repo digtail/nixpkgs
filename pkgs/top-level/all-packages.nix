@@ -20004,8 +20004,6 @@ with pkgs;
 
   ffmpegthumbnailer = callPackage ../development/libraries/ffmpegthumbnailer { };
 
-  ffmpeg-normalize = python3Packages.callPackage ../applications/video/ffmpeg-normalize { };
-
   ffms = callPackage ../development/libraries/ffms { };
 
   fftw = callPackage ../development/libraries/fftw { };
