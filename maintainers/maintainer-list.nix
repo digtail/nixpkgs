@@ -19209,6 +19209,12 @@
     githubId = 74413170;
     name = "Johannes Klein";
   };
+  sith-lord-vader = {
+    email = "abhiayush23@gmail.com";
+    github = "sith-lord-vader";
+    githubId = 24388085;
+    name = "Abhishek Adhikari";
+  };
   sivteck = {
     email = "sivaram1992@gmail.com";
     github = "sivteck";
