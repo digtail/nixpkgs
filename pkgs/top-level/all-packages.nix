@@ -523,8 +523,6 @@ with pkgs;
 
   conserver = callPackage ../tools/misc/conserver { };
 
-  containerlab = callPackage ../tools/networking/containerlab { };
-
   coolercontrol = recurseIntoAttrs (callPackage ../applications/system/coolercontrol { });
 
   confetty = callPackage ../applications/misc/confetty { };
@@ -3409,8 +3407,6 @@ with pkgs;
 
   blocksat-cli = with python3Packages; toPythonApplication blocksat-cli;
 
-  bmap-tools = callPackage ../tools/misc/bmap-tools { };
-
   bolliedelayxt-lv2 = callPackage ../applications/audio/bolliedelayxt.lv2 { };
 
   bonnmotion = callPackage ../development/tools/misc/bonnmotion { };
@@ -4031,11 +4027,11 @@ with pkgs;
 
   autorandr = callPackage ../tools/misc/autorandr { };
 
-  avahi = callPackage ../development/libraries/avahi (config.avahi or {});
+  avahi = callPackage ../development/libraries/avahi { };
 
-  avahi-compat = callPackage ../development/libraries/avahi ((config.avahi or {}) // {
+  avahi-compat = callPackage ../development/libraries/avahi {
     withLibdnssdCompat = true;
-  });
+  };
 
   avro-c = callPackage ../development/libraries/avro-c { };
 
@@ -5041,8 +5037,6 @@ with pkgs;
 
   filebench = callPackage ../tools/misc/filebench { };
 
-  filebot = callPackage ../applications/video/filebot { };
-
   fileshare = callPackage ../servers/fileshare { };
 
   fileshelter = callPackage ../servers/web-apps/fileshelter { };
@@ -5622,8 +5616,6 @@ with pkgs;
   materialx = with python3Packages; toPythonApplication materialx;
 
   maxcso = callPackage ../tools/archivers/maxcso { };
-
-  measureme = callPackage ../development/tools/rust/measureme { };
 
   medusa = callPackage ../tools/security/medusa { };
 
@@ -11492,8 +11484,8 @@ with pkgs;
 
   playwright = with python3Packages; toPythonApplication playwright;
 
-  playwright-driver = callPackage ../development/web/playwright/driver.nix { };
-  playwright-test = callPackage ../development/web/playwright-test/wrapped.nix { };
+  playwright-driver = (callPackage ../development/web/playwright/driver.nix { }).playwright-core;
+  playwright-test = (callPackage ../development/web/playwright/driver.nix { }).playwright-test;
 
   please = callPackage ../tools/security/please { };
 
@@ -11614,8 +11606,6 @@ with pkgs;
     # https://github.com/NixOS/nixpkgs/issues/311017
     stdenv = gcc12Stdenv;
   };
-
-  power-profiles-daemon = callPackage ../os-specific/linux/power-profiles-daemon { };
 
   ppl = callPackage ../development/libraries/ppl { };
 
@@ -16907,8 +16897,6 @@ with pkgs;
 
   pw-volume = callPackage ../tools/audio/pw-volume { };
 
-  pyradio = callPackage ../applications/audio/pyradio { };
-
   racket = callPackage ../development/interpreters/racket {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation;
   };
@@ -17598,7 +17586,9 @@ with pkgs;
 
   bob = callPackage ../development/tools/build-managers/bob { };
 
-  buck = callPackage ../development/tools/build-managers/buck { };
+  buck = callPackage ../development/tools/build-managers/buck {
+    python3 = python311;
+  };
 
   buck2 = callPackage ../development/tools/build-managers/buck2 { };
 
@@ -19922,8 +19912,6 @@ with pkgs;
 
   libesmtp = callPackage ../development/libraries/libesmtp { };
 
-  liberasurecode = callPackage ../applications/misc/liberasurecode { };
-
   example-robot-data = callPackage ../development/libraries/example-robot-data { };
 
   exiv2 = callPackage ../development/libraries/exiv2 { };
@@ -20254,10 +20242,10 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) AGL OpenGL;
   };
   glfw = glfw3;
-  glfw-wayland-minecraft = callPackage ../development/libraries/glfw/3.x-wayland-minecraft.nix {};
   glfw2 = callPackage ../development/libraries/glfw/2.x.nix { };
-  glfw3 = callPackage ../development/libraries/glfw/3.x.nix {
-    inherit (darwin.apple_sdk.frameworks) Carbon Cocoa Kernel;
+
+  glfw3-minecraft = callPackage ../by-name/gl/glfw3/package.nix {
+    withMinecraftPatch = true;
   };
 
   glibc = callPackage ../development/libraries/glibc {
@@ -20338,8 +20326,6 @@ with pkgs;
   wasilibc = callPackage ../development/libraries/wasilibc {
     stdenv = crossLibcStdenv;
   };
-
-  relibc = callPackage ../development/libraries/relibc { };
 
   # Only supported on Linux and only on glibc
   glibcLocales =
@@ -22239,7 +22225,7 @@ with pkgs;
 
   libunwind =
     if stdenv.isDarwin then darwin.libunwind
-    else if stdenv.hostPlatform.system == "riscv32-linux" then llvmPackages_14.libunwind
+    else if stdenv.hostPlatform.system == "riscv32-linux" then llvmPackages.libunwind
     else callPackage ../development/libraries/libunwind { };
 
   libuv = darwin.apple_sdk_11_0.callPackage ../development/libraries/libuv { };
@@ -22395,8 +22381,6 @@ with pkgs;
   yaml-cpp_0_3 = callPackage ../development/libraries/yaml-cpp/0.3.0.nix { };
 
   yas = callPackage ../development/libraries/yas { };
-
-  libcyaml = callPackage ../development/libraries/libcyaml { };
 
   rang = callPackage ../development/libraries/rang { };
 
@@ -25604,7 +25588,6 @@ with pkgs;
   prometheus-nginx-exporter = callPackage ../servers/monitoring/prometheus/nginx-exporter.nix { };
   prometheus-nginxlog-exporter = callPackage ../servers/monitoring/prometheus/nginxlog-exporter.nix { };
   prometheus-nut-exporter = callPackage ../servers/monitoring/prometheus/nut-exporter.nix { };
-  prometheus-openldap-exporter = callPackage ../servers/monitoring/prometheus/openldap-exporter.nix { } ;
   prometheus-pgbouncer-exporter = callPackage ../servers/monitoring/prometheus/pgbouncer-exporter.nix { };
   prometheus-php-fpm-exporter = callPackage ../servers/monitoring/prometheus/php-fpm-exporter.nix { };
   prometheus-pihole-exporter = callPackage ../servers/monitoring/prometheus/pihole-exporter.nix {  };
@@ -25967,8 +25950,6 @@ with pkgs;
   ### SERVERS / GEOSPATIAL
 
   fit-trackee = callPackage ../servers/geospatial/fit-trackee { };
-
-  mapproxy = callPackage ../servers/geospatial/mapproxy { };
 
   martin = callPackage ../servers/geospatial/martin {
     inherit (darwin.apple_sdk.frameworks) Security SystemConfiguration;
@@ -29160,10 +29141,6 @@ with pkgs;
   centerim = callPackage ../applications/networking/instant-messengers/centerim { };
 
   chatty = callPackage ../applications/networking/instant-messengers/chatty { };
-
-  chirp = callPackage ../applications/radio/chirp {
-    python3 = python311;
-  };
 
   browsh = callPackage ../applications/networking/browsers/browsh { };
 

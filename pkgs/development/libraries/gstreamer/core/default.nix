@@ -21,15 +21,16 @@
 , buildPackages
 , withIntrospection ? lib.meta.availableOn stdenv.hostPlatform gobject-introspection && stdenv.hostPlatform.emulatorAvailable buildPackages
 , libunwind
-# darwin.libunwind doesn't have pkg-config definitions so meson doesn't detect it.
-, withLibunwind ? !stdenv.isDarwin && lib.meta.availableOn stdenv.hostPlatform libunwind
+, withLibunwind ?
+  lib.meta.availableOn stdenv.hostPlatform libunwind &&
+    lib.elem "libunwind" libunwind.meta.pkgConfigModules or []
 # Checks meson.is_cross_build(), so even canExecute isn't enough.
 , enableDocumentation ? stdenv.hostPlatform == stdenv.buildPlatform, hotdoc
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "gstreamer";
-  version = "1.24.3";
+  version = "1.24.7";
 
   outputs = [
     "bin"
@@ -43,7 +44,7 @@ stdenv.mkDerivation (finalAttrs: {
     inherit (finalAttrs) pname version;
   in fetchurl {
     url = "https://gstreamer.freedesktop.org/src/${pname}/${pname}-${version}.tar.xz";
-    hash = "sha256-EiXvSjKfrhytxexyfaskmtVn6AcoeUk1Yc65HtNKpBQ=";
+    hash = "sha256-wOdbEkxSu3oMPc23NLKtJg6nKGqHRc8upinUyEnmqVg=";
   };
 
   depsBuildBuild = [

@@ -25,6 +25,8 @@ buildDotnetModule (finalAttrs: {
     hash = "sha256-FzQphMhiC1g+6qmk/R1v4rq2ldy35NcaWm0RR1UlwLA=";
   };
 
+  enableParallelBuilding = false;
+
   # If the whole solution is published, there seems to be a race condition where
   # it will sometimes publish the wrong version of a dependent assembly, for
   # example: Microsoft.Extensions.Hosting.dll 6.0.0 instead of 8.0.0.
@@ -71,24 +73,22 @@ buildDotnetModule (finalAttrs: {
 
   doCheck = true;
 
-  dotnetTestFlags = [
-    "--environment=USER=nobody"
-    (
-      "--filter="
-      + lib.strings.concatStringsSep "&" (
-        [
-          "Category!=Disabled"
-          "FlakeyTest!=True"
-          "RequiresNetworking!=True"
-          "FullyQualifiedName!=NexusMods.UI.Tests.ImageCacheTests.Test_LoadAndCache_RemoteImage"
-          "FullyQualifiedName!=NexusMods.UI.Tests.ImageCacheTests.Test_LoadAndCache_ImageStoredFile"
-        ]
-        ++ lib.optionals (!_7zz.meta.unfree) [
-          "FullyQualifiedName!=NexusMods.Games.FOMOD.Tests.FomodXmlInstallerTests.InstallsFilesSimple_UsingRar"
-        ]
-      )
-    )
+  dotnetTestFlags = [ "--environment=USER=nobody" ];
+
+  testFilters = [
+    "Category!=Disabled"
+    "FlakeyTest!=True"
+    "RequiresNetworking!=True"
   ];
+
+  disabledTests =
+    [
+      "NexusMods.UI.Tests.ImageCacheTests.Test_LoadAndCache_RemoteImage"
+      "NexusMods.UI.Tests.ImageCacheTests.Test_LoadAndCache_ImageStoredFile"
+    ]
+    ++ lib.optionals (!_7zz.meta.unfree) [
+      "NexusMods.Games.FOMOD.Tests.FomodXmlInstallerTests.InstallsFilesSimple_UsingRar"
+    ];
 
   passthru = {
     tests =
