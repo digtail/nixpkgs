@@ -971,6 +971,7 @@ with pkgs;
     prefetch-yarn-deps
     yarnConfigHook
     yarnBuildHook
+    yarnInstallHook
     fetchYarnDeps;
 
   find-cursor = callPackage ../tools/X11/find-cursor { };
@@ -21219,8 +21220,6 @@ with pkgs;
 
   libcue = callPackage ../development/libraries/libcue { };
 
-  libcutl = callPackage ../development/libraries/libcutl { };
-
   libcxxrt = callPackage ../development/libraries/libcxxrt {
     stdenv = if stdenv.hostPlatform.useLLVM or false
              then overrideCC stdenv buildPackages.llvmPackages.tools.clangNoLibcxx
@@ -34338,7 +34337,6 @@ with pkgs;
 
   westonLite = weston.override {
     demoSupport = false;
-    hdrSupport = false;
     jpegSupport = false;
     lcmsSupport = false;
     pangoSupport = false;
