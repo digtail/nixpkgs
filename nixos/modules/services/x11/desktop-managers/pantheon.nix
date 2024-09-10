@@ -130,7 +130,6 @@ in
 
       # Default services
       hardware.bluetooth.enable = mkDefault true;
-      hardware.pulseaudio.enable = mkDefault true;
       security.polkit.enable = true;
       services.accounts-daemon.enable = true;
       services.bamf.enable = true;
@@ -177,7 +176,7 @@ in
         pkgs.pantheon.mutter
       ];
       systemd.packages = with pkgs; [
-        gnome.gnome-session
+        gnome-session
         pantheon.gala
         pantheon.gnome-settings-daemon
         pantheon.elementary-session-settings
