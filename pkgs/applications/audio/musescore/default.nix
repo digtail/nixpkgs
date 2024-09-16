@@ -3,6 +3,7 @@
 , fetchFromGitHub
 , fetchpatch
 , cmake
+, wrapGAppsNoGuiHook
 , wrapQtAppsHook
 , pkg-config
 , ninja
@@ -95,7 +96,16 @@ in stdenv'.mkDerivation (finalAttrs: {
     "--set-default QT_QPA_PLATFORM xcb"
   ];
 
+  preFixup = ''
+    qtWrapperArgs+=("''${gappsWrapperArgs[@]}")
+  '';
+
+  dontWrapGApps = true;
+
   nativeBuildInputs = [
+    # Just to make it not crash when looking up Gschemas when opening external
+    # files
+    wrapGAppsNoGuiHook
     wrapQtAppsHook
     cmake
     qttools

@@ -742,6 +742,12 @@
     githubId = 45179933;
     name = "Alex Jackson";
   };
+  ajgon = {
+    email = "igor@rzegocki.pl";
+    github = "ajgon";
+    githubId = 150545;
+    name = "Igor Rzegocki";
+  };
   ajgrf = {
     email = "a@ajgrf.com";
     github = "ajgrf";
@@ -2249,6 +2255,12 @@
     github = "Baitinq";
     githubId = 30861839;
   };
+  baksa = {
+    email = "baksa@pm.me";
+    name = "Kryštof Baksa";
+    github = "Golbinex";
+    githubId = 62813600;
+  };
   balodja = {
     email = "balodja@gmail.com";
     github = "balodja";
@@ -3265,7 +3277,10 @@
     github = "callumio";
     githubId = 16057677;
     name = "Callum Leslie";
-    keys = [ { fingerprint = "BC82 4BB5 1656 D144 285E  A0EC D382 C4AF EECE AA90"; } ];
+    keys = [
+      { fingerprint = "BC82 4BB5 1656 D144 285E  A0EC D382 C4AF EECE AA90"; }
+      { fingerprint = "890B 06FB 209A 3E44 9491  C028 03B0 1F42 7831 BCFD"; }
+    ];
   };
   calvertvl = {
     email = "calvertvl@gmail.com";
@@ -4543,6 +4558,12 @@
     github = "daneads";
     githubId = 24708079;
     name = "Dan Eads";
+  };
+  danerieber = {
+    email = "danerieber@gmail.com";
+    github = "danerieber";
+    githubId = 6487079;
+    name = "Dane Rieber";
   };
   danid3v = {
     email = "sch220233@spengergasse.at";
@@ -10875,13 +10896,6 @@
     githubId = 8211181;
     name = "Kevin Kandlbinder";
   };
-  kfears = {
-    email = "kfearsoff@gmail.com";
-    github = "KFearsoff";
-    githubId = 66781795;
-    matrix = "@kfears:matrix.org";
-    name = "KFears";
-  };
   kfollesdal = {
     email = "kfollesdal@gmail.com";
     github = "kfollesdal";
@@ -11301,6 +11315,12 @@
     github = "krav";
     githubId = 4032;
     name = "Kristoffer Thømt Ravneberg";
+  };
+  kristianan = {
+    email = "kristian@krined.no";
+    github = "KristianAN";
+    githubId = 80984519;
+    name = "Kristian Alvestad Nedevold-Hansen";
   };
   kristian-brucaj = {
     email = "kbrucaj@gmail.com";
@@ -12117,6 +12137,11 @@
     github = "LouisDK1";
     githubId = 4969294;
     name = "Louis Tim Larsen";
+  };
+  louis-thevenet = {
+    name = "Louis Thevenet";
+    github = "louis-thevenet";
+    githubId = 55986107;
   };
   lovek323 = {
     email = "jason@oconal.id.au";
@@ -17222,6 +17247,12 @@
     github = "raboof";
     githubId = 131856;
     name = "Arnout Engelen";
+  };
+  racci = {
+    name = "James Draycott";
+    email = "me@racci.dev";
+    github = "DaRacci";
+    githubId = 90304606;
   };
   raehik = {
     email = "thefirstmuffinman@gmail.com";
