@@ -7210,8 +7210,6 @@ with pkgs;
 
   duplicacy = callPackage ../tools/backup/duplicacy { };
 
-  duplicati = callPackage ../tools/backup/duplicati { };
-
   duplicity = callPackage ../tools/backup/duplicity { };
 
   duply = callPackage ../tools/backup/duply { };
@@ -32034,7 +32032,7 @@ with pkgs;
 
   yambar-hyprland-wses = callPackage ../applications/misc/yambar-hyprland-wses { };
 
-  polyphone = libsForQt5.callPackage ../applications/audio/polyphone { };
+  polyphone = qt6.callPackage ../applications/audio/polyphone { };
 
   psi-notify = callPackage ../applications/misc/psi-notify { };
 
