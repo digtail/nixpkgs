@@ -17155,7 +17155,8 @@ with pkgs;
   inherit (callPackages ../development/tools/electron/chromedriver { })
     electron-chromedriver_29
     electron-chromedriver_30
-    electron-chromedriver_31;
+    electron-chromedriver_31
+    electron-chromedriver_32;
 
   electron_24 = electron_24-bin;
   electron_27 = electron_27-bin;
@@ -21831,8 +21832,6 @@ with pkgs;
   libstroke = callPackage ../development/libraries/libstroke { };
 
   libspatialaudio = callPackage ../development/libraries/libspatialaudio { };
-
-  libspatialindex = callPackage ../development/libraries/libspatialindex { };
 
   libspatialite = callPackage ../development/libraries/libspatialite { };
 
@@ -37764,10 +37763,10 @@ with pkgs;
   # Exceptions are versions that we need to keep to allow upgrades from older NixOS releases
   inherit (callPackage ../applications/networking/cluster/kops {})
     mkKops
-    kops_1_26
     kops_1_27
     kops_1_28
     kops_1_29
+    kops_1_30
     ;
   kops = kops_1_29;
 
