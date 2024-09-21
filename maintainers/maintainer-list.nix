@@ -16594,6 +16594,12 @@
     githubId = 358550;
     name = "Philip Lykke Carlsen";
   };
+  plebhash = {
+    name = "plebhash";
+    email = "plebhash@proton.me";
+    github = "plebhash";
+    githubId = 147345153;
+  };
   pleshevskiy = {
     email = "dmitriy@pleshevski.ru";
     github = "pleshevskiy";
@@ -19935,6 +19941,12 @@
     email = "me@samuelrounce.co.uk";
     github = "srounce";
     githubId = 60792;
+  };
+  sshine = {
+    email = "simon@simonshine.dk";
+    github = "sshine";
+    githubId = 50879;
+    name = "Simon Shine";
   };
   SShrike = {
     email = "severen@shrike.me";
