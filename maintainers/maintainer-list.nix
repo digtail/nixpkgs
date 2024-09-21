@@ -3422,6 +3422,12 @@
     githubId = 5241813;
     name = "Carter Sande";
   };
+  casaca = {
+    name = "J McNutt";
+    email = "jmacasac@hotmail.com";
+    github = "casaca24";
+    githubId = 87252279;
+  };
   casey = {
     email = "casey@rodarmor.net";
     github = "casey";
@@ -12270,6 +12276,12 @@
     github = "lucasew";
     githubId = 15693688;
     name = "Lucas Eduardo Wendt";
+  };
+  lucastso10 = {
+    email = "lucastso10@gmail.com";
+    github = "lucastso10";
+    githubId = 84486266;
+    name = "Lucas Teixeira Soares";
   };
   lucc = {
     email = "lucc+nix@posteo.de";
