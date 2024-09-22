@@ -6213,8 +6213,6 @@ with pkgs;
 
   byzanz = callPackage ../applications/video/byzanz { };
 
-  algolia-cli = callPackage ../development/tools/algolia-cli { };
-
   anydesk = callPackage ../applications/networking/remote/anydesk { };
 
   anystyle-cli = callPackage ../tools/misc/anystyle-cli { };
@@ -16949,8 +16947,6 @@ with pkgs;
 
   actiona = libsForQt5.callPackage ../applications/misc/actiona { };
 
-  actionlint = callPackage ../development/tools/analysis/actionlint { };
-
   adreaper = callPackage ../tools/security/adreaper { };
 
   aeron = callPackage ../servers/aeron { };
@@ -18631,15 +18627,11 @@ with pkgs;
 
   sloc = nodePackages.sloc;
 
-  smatch = callPackage ../development/tools/analysis/smatch { };
-
   smc = callPackage ../tools/misc/smc { };
 
   snakemake = callPackage ../applications/science/misc/snakemake { };
 
   snore = callPackage ../tools/misc/snore { };
-
-  snyk = callPackage ../development/tools/analysis/snyk { };
 
   snzip = callPackage ../tools/archivers/snzip { };
 
