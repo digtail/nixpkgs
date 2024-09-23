@@ -2028,6 +2028,13 @@
     github = "Atry";
     githubId = 601530;
   };
+  attila = {
+    name = "Attila Oláh";
+    email = "attila@dorn.haus";
+    github = "attilaolah";
+    githubId = 196617;
+    keys = [ { fingerprint = "BF2E 4759 74D3 88E0 E30C  9604 07E6 C064 3FD1 42C3"; } ];
+  };
   auchter = {
     name = "Michael Auchter";
     email = "a@phire.org";
@@ -2513,6 +2520,12 @@
     github = "benaryorg";
     githubId = 6145260;
     keys = [ { fingerprint = "804B 6CB8 AED5 61D9 3DAD  4DC5 E2F2 2C5E DF20 119D"; } ];
+  };
+  benchand = {
+    name = "Ben Chand";
+    email = "BenChand1995@gmail.com";
+    github = "BenChand";
+    githubId = 3618457;
   };
   bendlas = {
     email = "herwig@bendlas.net";
