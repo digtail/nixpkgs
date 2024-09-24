@@ -6609,7 +6609,7 @@ with pkgs;
 
   bbin = callPackage ../development/tools/bbin { };
 
-  blacken-docs = callPackage ../tools/misc/blacken-docs { };
+  blacken-docs = with python3Packages; toPythonApplication blacken-docs;
 
   bore = callPackage ../tools/networking/bore {
     inherit (darwin) Libsystem;
@@ -13249,8 +13249,6 @@ with pkgs;
   tv = callPackage ../tools/text/tv { };
 
   tvm = callPackage ../development/compilers/tvm { };
-
-  oysttyer = callPackage ../applications/networking/instant-messengers/oysttyer { };
 
   ttfb = callPackage ../development/tools/ttfb { };
 
