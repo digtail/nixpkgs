@@ -244,7 +244,7 @@ let
           # Prevent the baseruby from being included in the closure.
           remove-references-to \
             -t ${baseRuby} \
-            $rbConfig $out/lib/libruby*
+            $rbConfig $out/lib/libruby* $out/lib/ruby/gems/*/gems/*/exts.mk
         '';
 
         installCheckPhase = ''
