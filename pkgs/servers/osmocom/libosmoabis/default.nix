@@ -44,6 +44,7 @@ stdenv.mkDerivation rec {
     license = licenses.gpl3Only;
     platforms = platforms.linux;
     maintainers = with maintainers; [
+      janik
       markuskowa
     ];
   };

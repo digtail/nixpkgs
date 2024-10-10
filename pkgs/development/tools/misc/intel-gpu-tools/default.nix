@@ -106,6 +106,14 @@ stdenv.mkDerivation rec {
 
   hardeningDisable = [ "bindnow" ];
 
+  # We have a symbol conflict of PAGE_SIZE defined by fortify-headers and PAGE_SIZE
+  # defined in kms_atomic.c. We rename the PAGE_SIZE in kms_atomic.c in order to work
+  # around the conflict so that we can continue using the fortify hardening.
+  # This is not really upstreamable, because it only happens when using fortify-headers.
+  postPatch = ''
+    sed "s/ PAGE_SIZE/ page_size/g" -i tests/kms_atomic.c
+  '';
+
   meta = with lib; {
     changelog = "https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/v${version}/NEWS";
     homepage = "https://drm.pages.freedesktop.org/igt-gpu-tools/";

@@ -1,0 +1,26 @@
+From f1bcd7841774de7cfa05c1b1ee563cd34951333f Mon Sep 17 00:00:00 2001
+From: Xerz <xerz@xerz.one>
+Date: Sun, 21 Jul 2024 18:10:25 +0000
+Subject: [PATCH] systemd-boot: disable conflicting wchar_t on musl
+
+efi.h defines wchar_t as the compiler-provided __WCHAR_TYPE__,
+which conflicts with the musl implementation.
+This patch disables wchar_t on musl solely for the bootloader.
+---
+ src/boot/efi/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/boot/efi/meson.build b/src/boot/efi/meson.build
+index 43727ef050..1900d7e0cc 100644
+--- a/src/boot/efi/meson.build
++++ b/src/boot/efi/meson.build
+@@ -129,6 +129,7 @@ efi_includes = [
+
+ efi_c_args = [
+         '-DSD_BOOT=1',
++        '-D__DEFINED_wchar_t',
+         '-ffreestanding',
+         '-fno-strict-aliasing',
+         '-fshort-wchar',
+--
+2.44.1
