@@ -91,7 +91,7 @@ in
     };
     port = mkOption {
       type = types.port;
-      default = 3001;
+      default = 2283;
       description = "The port that immich will listen on.";
     };
     openFirewall = mkOption {
@@ -147,6 +147,11 @@ in
         default = "/run/postgresql";
         example = "127.0.0.1";
         description = "Hostname or address of the postgresql server. If an absolute path is given here, it will be interpreted as a unix socket path.";
+      };
+      port = mkOption {
+        type = types.port;
+        default = 5432;
+        description = "Port of the postgresql server.";
       };
       user = mkOption {
         type = types.str;
@@ -222,7 +227,6 @@ in
     services.redis.servers = mkIf cfg.redis.enable {
       immich = {
         enable = true;
-        user = cfg.user;
         port = cfg.redis.port;
         bind = mkIf (!isRedisUnixSocket) cfg.redis.host;
       };
@@ -281,6 +285,10 @@ in
         RuntimeDirectory = "immich";
         User = cfg.user;
         Group = cfg.group;
+        # ensure that immich-server has permission to connect to the redis socket.
+        SupplementaryGroups = mkIf (cfg.redis.enable && isRedisUnixSocket) [
+          config.services.redis.servers.immich.group
+        ];
       };
     };
 
@@ -290,7 +298,7 @@ in
       wantedBy = [ "multi-user.target" ];
       inherit (cfg.machine-learning) environment;
       serviceConfig = commonServiceConfig // {
-        ExecStart = lib.getExe cfg.package.machine-learning;
+        ExecStart = lib.getExe (cfg.package.machine-learning.override { immich = cfg.package; });
         CacheDirectory = "immich";
         User = cfg.user;
         Group = cfg.group;

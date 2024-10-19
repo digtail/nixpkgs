@@ -294,15 +294,11 @@ let
         "test-child-process-exec-env"
         "test-child-process-uid-gid"
         "test-fs-write-stream-eagain"
-        "test-https-foafssl"
         "test-process-euid-egid"
         "test-process-initgroups"
         "test-process-setgroups"
         "test-process-uid-gid"
         "test-setproctitle"
-        "test-tls-cli-max-version-1.3"
-        "test-tls-client-auth"
-        "test-tls-sni-option"
         # This is a bit weird, but for some reason fs watch tests fail with
         # sandbox.
         "test-fs-promises-watch"
@@ -323,6 +319,8 @@ let
         "test-runner-run"
         "test-runner-watch-mode"
         "test-watch-mode-files_watcher"
+      ] ++ lib.optionals (!lib.versionAtLeast version "22") [
+        "test-tls-multi-key"
       ] ++ lib.optionals stdenv.buildPlatform.isDarwin [
         # Disable tests that don’t work under macOS sandbox.
         "test-macos-app-sandbox"
@@ -333,6 +331,7 @@ let
         # TODO: revisit at a later date.
         "test-fs-readv"
         "test-fs-readv-sync"
+        "test-vm-memleak"
       ])}"
     ];
 

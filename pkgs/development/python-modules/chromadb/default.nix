@@ -52,7 +52,7 @@
 
 buildPythonPackage rec {
   pname = "chromadb";
-  version = "0.5.7";
+  version = "0.5.11";
   pyproject = true;
 
   disabled = pythonOlder "3.9";
@@ -61,13 +61,13 @@ buildPythonPackage rec {
     owner = "chroma-core";
     repo = "chroma";
     rev = "refs/tags/${version}";
-    hash = "sha256-+wRauCRrTQsGTadA6Ps0fXcpAl6ajsJRjcVEhP2+2ss=";
+    hash = "sha256-qE8eX97khcQa2JS9ZuJ1j3/pduXcQGyuVyvsnvKaemo=";
   };
 
   cargoDeps = rustPlatform.fetchCargoTarball {
     inherit src;
     name = "${pname}-${version}";
-    hash = "sha256-Y2mkWGgS77sGOOL+S/pw/UmrKDRyO+ZbN2Msj35sIl8=";
+    hash = "sha256-zciqOK5EkvxX3ctkGdkAppOQAW4CJ554PZsw2ctrdG0=";
   };
 
   pythonRelaxDeps = [
@@ -91,7 +91,7 @@ buildPythonPackage rec {
   buildInputs = [
     openssl
     zstd
-  ] ++ lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
+  ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ darwin.apple_sdk.frameworks.Security ];
 
   dependencies = [
     bcrypt
@@ -175,6 +175,6 @@ buildPythonPackage rec {
     license = licenses.asl20;
     maintainers = with maintainers; [ fab ];
     mainProgram = "chroma";
-    broken = stdenv.isLinux && stdenv.isAarch64;
+    broken = stdenv.hostPlatform.isLinux && stdenv.hostPlatform.isAarch64;
   };
 }

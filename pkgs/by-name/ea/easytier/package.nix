@@ -11,25 +11,25 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "easytier";
-  version = "1.2.3";
+  version = "2.0.3";
 
   src = fetchFromGitHub {
     owner = "EasyTier";
     repo = "EasyTier";
     rev = "refs/tags/v${version}";
-    hash = "sha256-7T6xdJrVTgg7rSTC2PaVTsBTgi14qJzaR6M8tRUL8OQ=";
+    hash = "sha256-0bS2VzddRZcFGmHugR0yXHjHqz06tpL4+IhQ6ReaU4Y=";
   };
 
-  cargoHash = "sha256-9wAGUVYKz7+Q8y+dmay8pEZnv7PikzuAoas/h5T3sLE=";
+  cargoHash = "sha256-AkEgEymgq2asxT4oR+NtGe8bUEPRUskVvwIJYrCD7xs=";
 
   nativeBuildInputs = [ protobuf ];
 
-  buildInputs = lib.optionals stdenv.isDarwin [
+  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
     darwin.apple_sdk.frameworks.Security
   ];
 
-  buildNoDefaultFeatures = stdenv.isMips;
-  buildFeatures = lib.optional stdenv.isMips "mips" ++ lib.optional withQuic "quic";
+  buildNoDefaultFeatures = stdenv.hostPlatform.isMips;
+  buildFeatures = lib.optional stdenv.hostPlatform.isMips "mips" ++ lib.optional withQuic "quic";
 
   doCheck = false; # tests failed due to heavy rely on network
 

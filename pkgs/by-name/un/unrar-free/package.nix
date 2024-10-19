@@ -8,13 +8,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "unrar-free";
-  version = "0.3.0";
+  version = "0.3.1";
 
   src = fetchFromGitLab {
     owner = "bgermann";
     repo = "unrar-free";
     rev = finalAttrs.version;
-    hash = "sha256-hVUEvlaVx2Ai1lYXU6hwiLToEMhCPWlSIh1WrbYKmco=";
+    hash = "sha256-Dg+KGZcqbE1nBPaemZlWQPaUQQJmaSe0nyDQRXJzwuE=";
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config ];
@@ -37,6 +37,6 @@ stdenv.mkDerivation (finalAttrs: {
     mainProgram = "unrar-free";
     maintainers = with lib.maintainers; [ thiagokokada ];
     platforms = lib.platforms.unix;
-    broken = stdenv.isDarwin;
+    broken = stdenv.hostPlatform.isDarwin;
   };
 })

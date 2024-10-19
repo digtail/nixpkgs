@@ -51,12 +51,13 @@ python3Packages.buildPythonPackage {
   meta = with lib; {
     homepage = "https://github.com/bkerler/edl";
     description = "Qualcomm EDL tool (Sahara / Firehose / Diag)";
-    license = licenses.mit;
+    # See https://github.com/NixOS/nixpkgs/issues/348931
+    license = licenses.unfree;
     maintainers = with maintainers; [
       lorenz
       xddxdd
     ];
     # Case-sensitive files in 'Loader' submodule
-    broken = stdenv.isDarwin;
+    broken = stdenv.hostPlatform.isDarwin;
   };
 }

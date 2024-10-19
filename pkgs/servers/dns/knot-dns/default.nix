@@ -9,11 +9,11 @@
 
 stdenv.mkDerivation rec {
   pname = "knot-dns";
-  version = "3.4.0";
+  version = "3.4.1";
 
   src = fetchurl {
     url = "https://secure.nic.cz/files/knot-dns/knot-${version}.tar.xz";
-    sha256 = "2730b11398944faa5151c51b0655cf26631090343c303597814f2a57df424736";
+    sha256 = "252a2b83a9319a605103f7491d73a881e97c63339d09170ac9d525155fa41b1a";
   };
 
   outputs = [ "bin" "out" "dev" ];
@@ -43,10 +43,10 @@ stdenv.mkDerivation rec {
     libmaxminddb # optional for geoip module (it's tiny)
     # without sphinx &al. for developer documentation
     fstrm protobufc # dnstap support
-  ] ++ lib.optionals stdenv.isLinux [
+  ] ++ lib.optionals stdenv.hostPlatform.isLinux [
     libcap_ng systemd
     xdp-tools libbpf libmnl # XDP support (it's Linux kernel API)
-  ] ++ lib.optional stdenv.isDarwin zlib; # perhaps due to gnutls
+  ] ++ lib.optional stdenv.hostPlatform.isDarwin zlib; # perhaps due to gnutls
 
   enableParallelBuilding = true;
 
@@ -62,7 +62,7 @@ stdenv.mkDerivation rec {
 
   passthru.tests = {
     inherit knot-resolver;
-  } // lib.optionalAttrs stdenv.isLinux {
+  } // lib.optionalAttrs stdenv.hostPlatform.isLinux {
     inherit (nixosTests) knot kea;
     prometheus-exporter = nixosTests.prometheus-exporters.knot;
     # Some dependencies are very version-sensitive, so the might get dropped

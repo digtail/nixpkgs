@@ -12,16 +12,16 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "biome";
-  version = "1.9.0";
+  version = "1.9.3";
 
   src = fetchFromGitHub {
     owner = "biomejs";
     repo = "biome";
     rev = "cli/v${version}";
-    hash = "sha256-AVw7yhC/f5JkFw2sQZ5YgzeXXjoJ8BfGgsS5sRVV/wE=";
+    hash = "sha256-GZV8M/yUDMom6xvSvSfDRjcMGm+thiaTR3fggkBLmRE=";
   };
 
-  cargoHash = "sha256-Vz6GCDGdC2IUtBK5X/t/Q5LODFUSlUxPBTCIjgdw3XU=";
+  cargoHash = "sha256-5VZGyOQAz/p4r4v8CHOTcdgolw44HtZM0NuhTw4Wx3A=";
 
   nativeBuildInputs = [
     pkg-config
@@ -33,7 +33,7 @@ rustPlatform.buildRustPackage rec {
       rust-jemalloc-sys
       zlib
     ]
-    ++ lib.optionals stdenv.isDarwin [
+    ++ lib.optionals stdenv.hostPlatform.isDarwin [
       darwin.apple_sdk.frameworks.Security
     ];
 

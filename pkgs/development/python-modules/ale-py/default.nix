@@ -30,14 +30,14 @@
 
 buildPythonPackage rec {
   pname = "ale-py";
-  version = "0.10.0";
+  version = "0.10.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "Farama-Foundation";
     repo = "Arcade-Learning-Environment";
     rev = "refs/tags/v${version}";
-    hash = "sha256-tdxO5eixI2swezhkeSMqeVgdiaa/VmNdwhZYURSzadw=";
+    hash = "sha256-MDMCYnyLZYbQXwyr5VuPeVEop825nD++yQ7hhsW4BX8=";
   };
 
   build-system = [
@@ -87,6 +87,6 @@ buildPythonPackage rec {
     changelog = "https://github.com/Farama-Foundation/Arcade-Learning-Environment/releases/tag/v${version}";
     license = lib.licenses.gpl2;
     maintainers = with lib.maintainers; [ billhuang ];
-    broken = stdenv.isDarwin; # fails to link with missing library
+    broken = stdenv.hostPlatform.isDarwin; # fails to link with missing library
   };
 }

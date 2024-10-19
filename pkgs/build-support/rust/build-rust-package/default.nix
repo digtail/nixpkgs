@@ -44,8 +44,7 @@
 , buildFeatures ? [ ]
 , checkFeatures ? buildFeatures
 , useNextest ? false
-# Enable except on aarch64 pkgsStatic, where we use lld for reasons
-, auditable ? !cargo-auditable.meta.broken && !(stdenv.hostPlatform.isStatic && stdenv.hostPlatform.isAarch64 && !stdenv.hostPlatform.isDarwin)
+, auditable ? !cargo-auditable.meta.broken
 
 , depsExtraArgs ? {}
 
@@ -97,6 +96,11 @@ assert useSysroot -> !(args.doCheck or true);
 
 stdenv.mkDerivation ((removeAttrs args [ "depsExtraArgs" "cargoUpdateHook" "cargoLock" ]) // lib.optionalAttrs useSysroot {
   RUSTFLAGS = "--sysroot ${sysroot} " + (args.RUSTFLAGS or "");
+} // lib.optionalAttrs (stdenv.isDarwin && buildType == "debug") {
+  RUSTFLAGS =
+    "-C split-debuginfo=packed "
+    + lib.optionalString useSysroot "--sysroot ${sysroot} "
+    + (args.RUSTFLAGS or "");
 } // {
   inherit buildAndTestSubdir cargoDeps;
 

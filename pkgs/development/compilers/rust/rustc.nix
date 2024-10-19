@@ -68,13 +68,13 @@ in stdenv.mkDerivation (finalAttrs: {
        # when linking stage1 libstd: cc: undefined reference to `__cxa_begin_catch'
        # This doesn't apply to cross-building for FreeBSD because the host
        # uses libstdc++, but the target (used for building std) uses libc++
-      optional (stdenv.isLinux && !withBundledLLVM && !stdenv.targetPlatform.isFreeBSD && !useLLVM)
+      optional (stdenv.hostPlatform.isLinux && !withBundledLLVM && !stdenv.targetPlatform.isFreeBSD && !useLLVM)
         "--push-state --as-needed -lstdc++ --pop-state"
-    ++ optional (stdenv.isLinux && !withBundledLLVM && !stdenv.targetPlatform.isFreeBSD && useLLVM)
+    ++ optional (stdenv.hostPlatform.isLinux && !withBundledLLVM && !stdenv.targetPlatform.isFreeBSD && useLLVM)
         "--push-state --as-needed -L${llvmPackages.libcxx}/lib -lc++ -lc++abi -lLLVM-${lib.versions.major llvmPackages.llvm.version} --pop-state"
-    ++ optional (stdenv.isDarwin && !withBundledLLVM) "-lc++ -lc++abi"
-    ++ optional stdenv.isFreeBSD "-rpath ${llvmPackages.libunwind}/lib"
-    ++ optional stdenv.isDarwin "-rpath ${llvmSharedForHost.lib}/lib");
+    ++ optional (stdenv.hostPlatform.isDarwin && !withBundledLLVM) "-lc++ -lc++abi"
+    ++ optional stdenv.hostPlatform.isFreeBSD "-rpath ${llvmPackages.libunwind}/lib"
+    ++ optional stdenv.hostPlatform.isDarwin "-rpath ${llvmSharedForHost.lib}/lib");
 
   # Increase codegen units to introduce parallelism within the compiler.
   RUSTFLAGS = "-Ccodegen-units=10";
@@ -109,6 +109,9 @@ in stdenv.mkDerivation (finalAttrs: {
     "--tools=rustc,rustdoc,rust-analyzer-proc-macro-srv"
     "--enable-rpath"
     "--enable-vendor"
+    # For Nixpkgs it makes more sense to use stdenv's linker than
+    # letting rustc build its own.
+    "--disable-lld"
     "--build=${stdenv.buildPlatform.rust.rustcTargetSpec}"
     "--host=${stdenv.hostPlatform.rust.rustcTargetSpec}"
     # std is built for all platforms in --target.
@@ -166,7 +169,7 @@ in stdenv.mkDerivation (finalAttrs: {
     "${setTarget}.musl-root=${pkgsBuildTarget.targetPackages.stdenv.cc.libc}"
   ] ++ optionals stdenv.targetPlatform.rust.isNoStdTarget [
     "--disable-docs"
-  ] ++ optionals (stdenv.isDarwin && stdenv.isx86_64) [
+  ] ++ optionals (stdenv.hostPlatform.isDarwin && stdenv.hostPlatform.isx86_64) [
     # https://github.com/rust-lang/rust/issues/92173
     "--set rust.jemalloc"
   ] ++ optionals useLLVM [
@@ -224,19 +227,19 @@ in stdenv.mkDerivation (finalAttrs: {
 
     # Useful debugging parameter
     # export VERBOSE=1
-  '' + lib.optionalString (stdenv.isDarwin && stdenv.isx86_64) ''
+  '' + lib.optionalString (stdenv.hostPlatform.isDarwin && stdenv.hostPlatform.isx86_64) ''
     # See https://github.com/jemalloc/jemalloc/issues/1997
     # Using a value of 48 should work on both emulated and native x86_64-darwin.
     export JEMALLOC_SYS_WITH_LG_VADDR=48
   '' + lib.optionalString (!(finalAttrs.src.passthru.isReleaseTarball or false)) ''
     mkdir .cargo
-    cat > .cargo/config <<\EOF
+    cat > .cargo/config.toml <<\EOF
     [source.crates-io]
     replace-with = "vendored-sources"
     [source.vendored-sources]
     directory = "vendor"
     EOF
-  '' + lib.optionalString (stdenv.isFreeBSD) ''
+  '' + lib.optionalString (stdenv.hostPlatform.isFreeBSD) ''
     # lzma-sys bundles an old version of xz that doesn't build
     # on modern FreeBSD, use the system one instead
     substituteInPlace src/bootstrap/src/core/build_steps/tool.rs \
@@ -257,7 +260,7 @@ in stdenv.mkDerivation (finalAttrs: {
     ++ optionals fastCross [ lndir makeWrapper ];
 
   buildInputs = [ openssl ]
-    ++ optionals stdenv.isDarwin [ libiconv Security zlib ]
+    ++ optionals stdenv.hostPlatform.isDarwin [ libiconv Security zlib ]
     ++ optional (!withBundledLLVM) llvmShared.lib
     ++ optional (useLLVM && !withBundledLLVM) [
       llvmPackages.libunwind

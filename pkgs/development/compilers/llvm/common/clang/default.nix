@@ -24,12 +24,14 @@ let
   pname = "clang";
 
   src' = if monorepoSrc != null then
-    runCommand "${pname}-src-${version}" {} ''
+    runCommand "${pname}-src-${version}" {} (''
       mkdir -p "$out"
+    '' + lib.optionalString (lib.versionAtLeast release_version "14") ''
       cp -r ${monorepoSrc}/cmake "$out"
+    '' + ''
       cp -r ${monorepoSrc}/${pname} "$out"
       cp -r ${monorepoSrc}/clang-tools-extra "$out"
-    '' else src;
+    '') else src;
 
   self = stdenv.mkDerivation (finalAttrs: rec {
     inherit pname version patches;
@@ -72,7 +74,8 @@ let
       "-DCLANG_PSEUDO_GEN=${buildLlvmTools.libclang.dev}/bin/clang-pseudo-gen"
     ]) ++ lib.optionals (stdenv.targetPlatform.useLLVM or false) [
       "-DCLANG_DEFAULT_CXX_STDLIB=ON"
-    ] ++ devExtraCmakeFlags;
+    ] ++ lib.optional (lib.versionAtLeast release_version "20") "-DLLVM_DIR=${libllvm.dev}/lib/cmake/llvm"
+      ++ devExtraCmakeFlags;
 
     postPatch = ''
       # Make sure clang passes the correct location of libLTO to ld64
@@ -132,8 +135,10 @@ let
       mkdir -p $dev/bin
     '' + (if lib.versionOlder release_version "15" then ''
       cp bin/clang-tblgen $dev/bin
-    '' else ''
+    '' else if lib.versionOlder release_version "20" then ''
       cp bin/{clang-tblgen,clang-tidy-confusable-chars-gen,clang-pseudo-gen} $dev/bin
+    '' else ''
+      cp bin/{clang-tblgen,clang-tidy-confusable-chars-gen} $dev/bin
     '');
 
     passthru = {

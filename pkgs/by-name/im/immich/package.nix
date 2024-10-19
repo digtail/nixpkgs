@@ -8,7 +8,7 @@
   node-gyp,
   runCommand,
   nixosTests,
-  callPackage,
+  immich-machine-learning,
   # build-time deps
   glib,
   pkg-config,
@@ -210,7 +210,7 @@ buildNpmPackage' {
       inherit (nixosTests) immich;
     };
 
-    machine-learning = callPackage ./machine-learning.nix { inherit src; };
+    machine-learning = immich-machine-learning;
 
     inherit
       src
@@ -225,7 +225,12 @@ buildNpmPackage' {
     description = "Self-hosted photo and video backup solution";
     homepage = "https://immich.app/";
     license = lib.licenses.agpl3Only;
-    maintainers = with lib.maintainers; [ jvanbruegge ];
+    maintainers = with lib.maintainers; [
+      dotlambda
+      jvanbruegge
+      Scrumplex
+      titaniumtown
+    ];
     platforms = lib.platforms.linux;
     mainProgram = "server";
   };
