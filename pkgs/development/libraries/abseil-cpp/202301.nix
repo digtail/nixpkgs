@@ -44,7 +44,7 @@ stdenv.mkDerivation (finalAttrs: {
     license = licenses.asl20;
     platforms = platforms.all;
     maintainers = [ maintainers.andersk ];
-    # Requires LFS64 APIs. 202401 and later are fine.
-    broken = stdenv.hostPlatform.isMusl;
+    # upgrade deps to newer protobuf instead of fixing this
+    broken = stdenv.hostPlatform.isMusl && lib.versionAtLeast stdenv.cc.libc.version "1.2.4";
   };
 })
