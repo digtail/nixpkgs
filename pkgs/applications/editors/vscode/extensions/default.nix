@@ -313,8 +313,8 @@ let
         mktplcRef = {
           name = "vscode-apollo";
           publisher = "apollographql";
-          version = "2.3.3";
-          hash = "sha256-pxj3BM+LJPS9KxxniEtBLT3x1FERGr4yPndxOSVLgR8=";
+          version = "2.3.6";
+          hash = "sha256-4AehjV7XO9NxS3aHpqm2sKA+kaFbYLrr3E5sUCTRW0I=";
         };
         meta = {
           changelog = "https://marketplace.visualstudio.com/items/apollographql.vscode-apollo/changelog";
@@ -656,7 +656,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=bierner.markdown-footnotes";
           homepage = "https://github.com/mjbvz/vscode-markdown-footnotes";
           license = lib.licenses.mit;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -689,7 +689,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=bierner.markdown-preview-github-styles";
           homepage = "https://github.com/mjbvz/vscode-github-markdown-preview-style";
           license = lib.licenses.mit;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -697,8 +697,8 @@ let
         mktplcRef = {
           name = "biome";
           publisher = "biomejs";
-          version = "2024.5.251958";
-          hash = "sha256-Pxbvj6e3nRwuLKmPEtE02JdHmZbyuXNh4T+FZKjBkWo=";
+          version = "2024.10.131712";
+          hash = "sha256-wslaPz0YwavLgP/gLXDIKsk2dvVmFgkSDCI9OfpKwwI=";
         };
         meta = {
           changelog = "https://github.com/biomejs/biome-vscode/blob/main/CHANGELOG.md";
@@ -710,7 +710,7 @@ let
             # or
             asl20
           ];
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -727,7 +727,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=bmalehorn.vscode-fish";
           homepage = "https://github.com/bmalehorn/vscode-fish";
           license = lib.licenses.mit;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -1793,7 +1793,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=fabiospampinato.vscode-open-in-github";
           homepage = "https://github.com/fabiospampinato/vscode-open-in-github";
           license = lib.licenses.mit;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -1930,7 +1930,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=fortran-lang.linter-gfortran";
           homepage = "https://github.com/fortran-lang/vscode-fortran-support";
           license = lib.licenses.mit;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -2844,7 +2844,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=Kravets.vscode-publint";
           homepage = "https://github.com/kravetsone/vscode-publint";
           license = lib.licenses.mit;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -3069,7 +3069,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=meganrogge.template-string-converter";
           homepage = "https://github.com/meganrogge/template-string-converter";
           license = lib.licenses.mit;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -3605,7 +3605,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl";
           homepage = "https://code.visualstudio.com/docs/remote/wsl";
           license = lib.licenses.unfree;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -3716,7 +3716,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=nefrob.vscode-just-syntax";
           homepage = "https://github.com/nefrob/vscode-just";
           license = lib.licenses.mit;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -4455,7 +4455,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=sswg.swift-lang";
           homepage = "https://github.com/swiftlang/vscode-swift";
           license = lib.licenses.asl20;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -4585,8 +4585,8 @@ let
         mktplcRef = {
           name = "svelte-vscode";
           publisher = "svelte";
-          version = "108.3.3";
-          hash = "sha256-q7w8DPzBLpD+13v7RnyDdC3ocDKAihHBVt3pnwSTwio=";
+          version = "109.1.0";
+          hash = "sha256-ozD9k/zfklwBJtc1WdC52hgJckxBgVRmcZOwSYboACM=";
         };
         meta = {
           changelog = "https://github.com/sveltejs/language-tools/releases";
@@ -4904,8 +4904,8 @@ let
         mktplcRef = {
           name = "uiua-vscode";
           publisher = "uiua-lang";
-          version = "0.0.54";
-          hash = "sha256-oY8z3q4LOLhiTttm9Rtcy/CnhaSHkjyCBjwqYnuNBQA=";
+          version = "0.0.56";
+          hash = "sha256-4uze2hmTV8sNDSdlvwLf1Z/4dGn4pda0mT0FCg/xWqM=";
         };
         meta = {
           description = "VSCode language extension for Uiua";
@@ -5076,7 +5076,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=vitaliymaz.vscode-svg-previewer";
           homepage = "https://github.com/vitaliymaz/vscode-svg-previewer";
           license = lib.licenses.unfree;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -5194,8 +5194,8 @@ let
         mktplcRef = {
           name = "vscode-icons";
           publisher = "vscode-icons-team";
-          version = "12.8.0";
-          hash = "sha256-2+Wf0AL9C5xOQCjA9maMt/W/kviNuiyMfaOFDU82KxM=";
+          version = "12.9.0";
+          hash = "sha256-ULjZlbGcVbPiokfnx7d4z7cmVVEfy2d+SUch80rZRA4=";
         };
         meta = {
           description = "Bring real icons to your Visual Studio Code";
@@ -5408,7 +5408,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=yoavbls.pretty-ts-errors";
           homepage = "https://github.com/yoavbls/pretty-ts-errors";
           license = lib.licenses.mit;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 
@@ -5495,7 +5495,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=zguolee.tabler-icons";
           homepage = "https://github.com/zguolee/vscode-tabler-icons";
           license = lib.licenses.mit;
-          maintainers = [ lib.maintainers.uncenter ];
+          maintainers = [ ];
         };
       };
 

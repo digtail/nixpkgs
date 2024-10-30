@@ -149,8 +149,7 @@ in
       vim-fugitive
       vim-rhubarb
     ];
-    # TODO: enable after https://github.com/NixOS/nixpkgs/pull/342240 merged
-    # nvimRequireCheck = "advanced_git_search.utils";
+    nvimRequireCheck = "advanced_git_search.utils";
   };
 
   animation-nvim = super.animation-nvim.overrideAttrs {
@@ -201,19 +200,6 @@ in
 
   blink-cmp = callPackage ./blink-cmp { };
 
-  # The GitHub repository returns 404, which breaks the update script
-  vim-pony = buildVimPlugin {
-    pname = "vim-pony";
-    version = "2018-07-27";
-    src = fetchFromGitHub {
-      owner = "jakwings";
-      repo = "vim-pony";
-      rev = "b26f01a869000b73b80dceabd725d91bfe175b75";
-      sha256 = "0if8g94m3xmpda80byfxs649w2is9ah1k8v3028nblan73zlc8x8";
-    };
-    meta.homepage = "https://github.com/jakwings/vim-pony/";
-  };
-
   chadtree = super.chadtree.overrideAttrs {
     buildInputs = [
       python3
@@ -236,8 +222,7 @@ in
       plenary-nvim
       telescope-nvim
     ];
-    # TODO: enable after https://github.com/NixOS/nixpkgs/pull/342240 merged
-    # nvimRequireCheck = "chatgpt";
+    nvimRequireCheck = "chatgpt";
   };
 
   clang_complete = super.clang_complete.overrideAttrs {
@@ -1114,6 +1099,11 @@ in
     };
   };
 
+  hunk-nvim = super.hunk-nvim.overrideAttrs {
+    dependencies = with self; [ nui-nvim ];
+    nvimRequireCheck = "hunk";
+  };
+
   # https://hurl.dev/
   hurl = buildVimPlugin {
     pname = "hurl";
@@ -1237,12 +1227,36 @@ in
     nvimRequireCheck = "lean";
   };
 
+  LeaderF = super.LeaderF.overrideAttrs {
+    nativeBuildInputs = [ python3.pkgs.setuptools ];
+    buildInputs = [ python3 ];
+    # rm */build/ to prevent dependencies on gcc
+    # strip the *.so to keep files small
+    buildPhase = ''
+      patchShebangs .
+      ./install.sh
+      rm autoload/leaderf/fuzzyMatch_C/build/ -r
+    '';
+    stripDebugList = [ "autoload/leaderf/python" ];
+  };
+
   leap-ast-nvim = super.leap-ast-nvim.overrideAttrs {
     dependencies = with self; [
       leap-nvim
       nvim-treesitter
     ];
     nvimRequireCheck = "leap-ast";
+  };
+
+  leetcode-nvim = super.leetcode-nvim.overrideAttrs {
+    dependencies = with self; [
+      nui-nvim
+      plenary-nvim
+      telescope-nvim
+    ];
+
+    doInstallCheck = true;
+    nvimRequireCheck = "leetcode";
   };
 
   lens-vim = super.lens-vim.overrideAttrs {
@@ -1291,15 +1305,7 @@ in
     nvimRequireCheck = "lzn-auto-require.loader";
   };
 
-  magma-nvim-goose = buildVimPlugin {
-    pname = "magma-nvim-goose";
-    version = "2023-03-13";
-    src = fetchFromGitHub {
-      owner = "WhiteBlackGoose";
-      repo = "magma-nvim-goose";
-      rev = "5d916c39c1852e09fcd39eab174b8e5bbdb25f8f";
-      sha256 = "10d6dh0czdpgfpzqs5vzxfffkm0460qjzi2mfkacgghqf3iwkbja";
-    };
+  magma-nvim = super.magma-nvim.overrideAttrs {
     passthru.python3Dependencies =
       ps: with ps; [
         pynvim
@@ -1312,7 +1318,6 @@ in
         pyperclip
         pnglatex
       ];
-    meta.homepage = "https://github.com/WhiteBlackGoose/magma-nvim-goose/";
   };
 
   markdown-preview-nvim =
@@ -1524,6 +1529,10 @@ in
     nvimRequireCheck = "null-ls";
   };
 
+  NotebookNavigator-nvim = super.NotebookNavigator-nvim.overrideAttrs {
+    nvimRequireCheck = "notebook-navigator";
+  };
+
   null-ls-nvim = super.null-ls-nvim.overrideAttrs {
     dependencies = with self; [ plenary-nvim ];
     nvimRequireCheck = "null-ls";
@@ -1583,8 +1592,7 @@ in
       nvim-lspconfig
       nvim-navic
     ];
-    # TODO: enable after https://github.com/NixOS/nixpkgs/pull/342240 merged
-    # nvimRequireCheck = "nvim-navbuddy";
+    nvimRequireCheck = "nvim-navbuddy";
   };
 
   vim-mediawiki-editor = super.vim-mediawiki-editor.overrideAttrs {
@@ -1636,7 +1644,7 @@ in
         inherit (old) version src;
         sourceRoot = "${old.src.name}/spectre_oxi";
 
-        cargoHash = "sha256-D7KUJ8q521WWgUqBBOgepGJ3NQ4DdKr+Bg/4k3Lf+mw=";
+        cargoHash = "sha256-yYUbfqkICsGDKexYjfhXfpIoT1+QrZQJPpKzk+gwm+s=";
 
         preCheck = ''
           mkdir tests/tmp/
@@ -1670,6 +1678,10 @@ in
   );
 
   nvim-treesitter-parsers = lib.recurseIntoAttrs self.nvim-treesitter.grammarPlugins;
+
+  nvim-treesitter-sexp = super.nvim-treesitter-sexp.overrideAttrs {
+    nvimRequireCheck = "treesitter-sexp";
+  };
 
   nvim-ufo = super.nvim-ufo.overrideAttrs {
     dependencies = with self; [ promise-async ];
@@ -1856,6 +1868,10 @@ in
     nvimRequireCheck = "rustaceanvim";
   };
 
+  scretch-nvim = super.scretch-nvim.overrideAttrs {
+    nvimRequireCheck = "scretch";
+  };
+
   sg-nvim = super.sg-nvim.overrideAttrs (
     old:
     let
@@ -1983,20 +1999,23 @@ in
     meta.homepage = "https://github.com/ackyshake/Spacegray.vim/";
   };
 
-  sqlite-lua = super.sqlite-lua.overrideAttrs (oa: {
-    postPatch =
-      let
-        libsqlite = "${sqlite.out}/lib/libsqlite3${stdenv.hostPlatform.extensions.sharedLibrary}";
-      in
-      ''
+  sqlite-lua = super.sqlite-lua.overrideAttrs (
+    oa:
+    let
+      libsqlite = "${sqlite.out}/lib/libsqlite3${stdenv.hostPlatform.extensions.sharedLibrary}";
+    in
+    {
+      postPatch = ''
         substituteInPlace lua/sqlite/defs.lua \
-          --replace "path = vim.g.sqlite_clib_path" "path = vim.g.sqlite_clib_path or ${lib.escapeShellArg libsqlite}"
+          --replace-fail "path = vim.g.sqlite_clib_path" "path = vim.g.sqlite_clib_path or '${lib.escapeShellArg libsqlite}'"
       '';
 
-    passthru = oa.passthru // {
-      initLua = ''vim.g.sqlite_clib_path = "${sqlite.out}/lib/libsqlite3${stdenv.hostPlatform.extensions.sharedLibrary}"'';
-    };
-  });
+      passthru = oa.passthru // {
+        initLua = ''vim.g.sqlite_clib_path = "${libsqlite}"'';
+      };
+      nvimRequireCheck = "sqlite";
+    }
+  );
 
   ssr = super.ssr-nvim.overrideAttrs {
     dependencies = with self; [ nvim-treesitter ];
@@ -2496,6 +2515,19 @@ in
     dependencies = with self; [ denops-vim ];
   };
 
+  # The GitHub repository returns 404, which breaks the update script
+  vim-pony = buildVimPlugin {
+    pname = "vim-pony";
+    version = "2018-07-27";
+    src = fetchFromGitHub {
+      owner = "jakwings";
+      repo = "vim-pony";
+      rev = "b26f01a869000b73b80dceabd725d91bfe175b75";
+      sha256 = "0if8g94m3xmpda80byfxs649w2is9ah1k8v3028nblan73zlc8x8";
+    };
+    meta.homepage = "https://github.com/jakwings/vim-pony/";
+  };
+
   vim-sensible = super.vim-sensible.overrideAttrs {
     patches = [ ./patches/vim-sensible/fix-nix-store-path-regex.patch ];
   };
@@ -2526,11 +2558,7 @@ in
   };
 
   vim-tabby = super.vim-tabby.overrideAttrs {
-    postPatch = ''
-      substituteInPlace autoload/tabby/globals.vim --replace-fail \
-        "let g:tabby_node_binary = get(g:, 'tabby_node_binary', 'node')" \
-        "let g:tabby_node_binary = get(g:, 'tabby_node_binary', '${nodejs}/bin/node')"
-    '';
+    nvimRequirecheck = "tabby";
   };
 
   vim-textobj-entire = super.vim-textobj-entire.overrideAttrs {
@@ -2661,17 +2689,6 @@ in
     nvimRequireCheck = "yazi";
   };
 
-  leetcode-nvim = super.leetcode-nvim.overrideAttrs {
-    dependencies = with self; [
-      nui-nvim
-      plenary-nvim
-      telescope-nvim
-    ];
-
-    doInstallCheck = true;
-    nvimRequireCheck = "leetcode";
-  };
-
   YouCompleteMe = super.YouCompleteMe.overrideAttrs {
     buildPhase = ''
       substituteInPlace plugin/youcompleteme.vim \
@@ -2701,18 +2718,6 @@ in
       substituteInPlace autoload/zoxide.vim \
         --replace "'zoxide_executable', 'zoxide'" "'zoxide_executable', '${zoxide}/bin/zoxide'"
     '';
-  };
-  LeaderF = super.LeaderF.overrideAttrs {
-    nativeBuildInputs = [ python3.pkgs.setuptools ];
-    buildInputs = [ python3 ];
-    # rm */build/ to prevent dependencies on gcc
-    # strip the *.so to keep files small
-    buildPhase = ''
-      patchShebangs .
-      ./install.sh
-      rm autoload/leaderf/fuzzyMatch_C/build/ -r
-    '';
-    stripDebugList = [ "autoload/leaderf/python" ];
   };
 }
 // (
@@ -2752,8 +2757,6 @@ in
       "coc-tabnine"
       "coc-texlab"
       "coc-toml"
-      "coc-tslint"
-      "coc-tslint-plugin"
       "coc-tsserver"
       "coc-ultisnips"
       "coc-vetur"

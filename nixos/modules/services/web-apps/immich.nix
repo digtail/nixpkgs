@@ -258,7 +258,7 @@ in
       postgresEnv
       // redisEnv
       // {
-        HOST = cfg.host;
+        IMMICH_HOST = cfg.host;
         IMMICH_PORT = toString cfg.port;
         IMMICH_MEDIA_LOCATION = cfg.mediaLocation;
         IMMICH_MACHINE_LEARNING_URL = "http://localhost:3003";
@@ -282,6 +282,7 @@ in
         ExecStart = lib.getExe cfg.package;
         EnvironmentFile = mkIf (cfg.secretsFile != null) cfg.secretsFile;
         StateDirectory = "immich";
+        SyslogIdentifier = "immich";
         RuntimeDirectory = "immich";
         User = cfg.user;
         Group = cfg.group;
