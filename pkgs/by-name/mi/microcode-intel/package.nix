@@ -2,7 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  libarchive,
+  cpio,
   iucode-tool,
 }:
 
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     iucode-tool
-    libarchive
+    cpio
   ];
 
   installPhase = ''
@@ -28,7 +28,7 @@ stdenv.mkDerivation rec {
     mkdir -p $out kernel/x86/microcode
     iucode_tool -w kernel/x86/microcode/GenuineIntel.bin intel-ucode/
     touch -d @$SOURCE_DATE_EPOCH kernel/x86/microcode/GenuineIntel.bin
-    echo kernel/x86/microcode/GenuineIntel.bin | bsdtar --uid 0 --gid 0 -cnf - -T - | bsdtar --null -cf - --format=newc @- > $out/intel-ucode.img
+    echo kernel/x86/microcode/GenuineIntel.bin | cpio --quiet -o -H newc -R +0:+0 --reproducible --null > $out/intel-ucode.img
 
     runHook postInstall
   '';

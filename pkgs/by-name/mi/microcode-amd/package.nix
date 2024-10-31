@@ -2,7 +2,7 @@
   lib,
   stdenv,
   linux-firmware,
-  libarchive,
+  cpio,
 }:
 
 stdenv.mkDerivation {
@@ -13,7 +13,7 @@ stdenv.mkDerivation {
 
   sourceRoot = ".";
 
-  nativeBuildInputs = [ libarchive ];
+  nativeBuildInputs = [ cpio ];
 
   buildPhase = ''
     mkdir -p kernel/x86/microcode
@@ -24,7 +24,7 @@ stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out
     touch -d @$SOURCE_DATE_EPOCH kernel/x86/microcode/AuthenticAMD.bin
-    echo kernel/x86/microcode/AuthenticAMD.bin | bsdtar --uid 0 --gid 0 -cnf - -T - | bsdtar --null -cf - --format=newc @- > $out/amd-ucode.img
+    echo kernel/x86/microcode/AuthenticAMD.bin | cpio --quiet -o -H newc -R +0:+0 --reproducible --null > $out/amd-ucode.img
   '';
 
   meta = with lib; {
